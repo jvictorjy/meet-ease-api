@@ -15,6 +15,14 @@ export class EnvironmentVariables {
   NODE_ENV: string;
 
   @IsNotEmpty()
+  @IsString()
+  API_HOST: string;
+
+  @IsNotEmpty()
+  @IsString()
+  API_LOG_ENABLE: string;
+
+  @IsNotEmpty()
   @Transform(transform.toInt)
   @IsInt()
   PORT: number;
