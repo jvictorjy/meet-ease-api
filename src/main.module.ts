@@ -8,6 +8,7 @@ import {
 } from '@app/common/application/exceptions/filter';
 import { MainController } from './main.controller';
 import { UsersModule } from '@app/users/users.module';
+import { ProfilesModule } from '@app/profiles/profiles.module';
 
 const providers: Provider[] = [
   {
@@ -21,7 +22,11 @@ const providers: Provider[] = [
 ];
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, validate }), UsersModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, validate }),
+    UsersModule,
+    ProfilesModule,
+  ],
   controllers: [MainController],
   providers,
 })

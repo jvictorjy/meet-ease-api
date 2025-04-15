@@ -13,7 +13,7 @@ model Users {
   email      String    @unique @db.VarChar(255)
   password   String    @db.VarChar(255)
   phone      String    @db.VarChar(50)
-  profile_id String   @db.VarChar(50)
+  profile_id  String    @db.VarChar(50)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
@@ -24,13 +24,12 @@ model Users {
 }
 
 model Profiles {
-  id         String   @id @default(uuid())
-  bio        String?  @db.Text
-  avatar_url String?  @db.VarChar(255)
-  user_id     String   @unique
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  
+  id          String   @id @default(uuid())
+  role        String?  @db.VarChar(255)
+  description String?  @db.Text
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
   user       Users[]
 
   @@map("profiles")
