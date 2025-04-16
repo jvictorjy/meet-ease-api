@@ -4,11 +4,13 @@ import { PrismaProfileRepository } from '@app/profiles/infrastructure/repositori
 import {
   CreateProfileController,
   FindAllProfileController,
+  GetProfileController,
   UpdateProfileController,
 } from '@app/profiles/interfaces/http/controllers';
 import {
   CreateProfileUseCase,
   FindAllProfileUseCase,
+  GetProfileUseCase,
   UpdateProfileUseCase,
 } from '@app/profiles/application/use-cases';
 
@@ -18,6 +20,7 @@ import {
     CreateProfileController,
     UpdateProfileController,
     FindAllProfileController,
+    GetProfileController,
   ],
   providers: [
     {
@@ -27,6 +30,7 @@ import {
     CreateProfileUseCase,
     UpdateProfileUseCase,
     FindAllProfileUseCase,
+    GetProfileUseCase,
   ],
 })
 export class ProfilesModule {}
