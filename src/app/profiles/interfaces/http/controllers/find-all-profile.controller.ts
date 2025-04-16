@@ -8,7 +8,7 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { FindAllProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/find-all-profile.dto';
+import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
 
 /**
@@ -52,7 +52,7 @@ export class FindAllProfileController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List profiles', // Swagger response for 200 status
-    type: [FindAllProfileUseCaseResponseDTO], // Swagger response type
+    type: [GetProfileUseCaseResponseDTO], // Swagger response type
   })
   async handle() {
     return this.findAllProfileUseCase.execute();

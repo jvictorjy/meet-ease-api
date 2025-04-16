@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
-export class FindAllProfileUseCaseResponseDTO {
+export class GetProfileUseCaseResponseDTO {
   @ApiProperty({
     type: 'string',
     description: 'ID of the profile',

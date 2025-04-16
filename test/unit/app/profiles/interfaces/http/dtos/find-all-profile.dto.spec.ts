@@ -1,4 +1,4 @@
-import { FindAllProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/find-all-profile.dto';
+import { FindAllProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 
