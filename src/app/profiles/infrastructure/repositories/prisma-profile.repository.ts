@@ -59,4 +59,18 @@ export class PrismaProfileRepository implements ProfileRepository {
       foundProfile.updated_at,
     );
   }
+
+  async findAll(): Promise<Profile[]> {
+    const foundProfiles = await this.prisma.profiles.findMany();
+
+    return foundProfiles.map((profile) => {
+      return new Profile(
+        profile.id,
+        profile.role,
+        profile.description,
+        profile.created_at,
+        profile.updated_at,
+      );
+    });
+  }
 }
