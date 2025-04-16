@@ -63,13 +63,21 @@ describe('UpdateProfileController', () => {
   });
 
   it('returns HTTP 404 when profile is not found', async () => {
-    jest
-      .spyOn(updateProfileUseCase, 'execute')
-      .mockRejectedValue(new NotFoundException('Profile not found'));
+    jest.spyOn(updateProfileUseCase, 'execute').mockRejectedValue(
+      Exception.new({
+        code: Code.NOT_FOUND.code,
+        overrideMessage: 'Profile not found',
+      }),
+    );
 
     await expect(
       controller.handle('1', { description: 'Updated description' }),
-    ).rejects.toThrow(NotFoundException);
+    ).rejects.toThrow(
+      Exception.new({
+        code: Code.NOT_FOUND.code,
+        overrideMessage: 'Profile not found',
+      }),
+    );
     expect(updateProfileUseCase.execute).toHaveBeenCalledWith(
       '1',
       'Updated description',

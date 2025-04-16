@@ -3,8 +3,8 @@ export class Profile {
     public readonly id: string,
     public role: string,
     public description: string | null,
-    public createdAt: Date,
-    public updatedAt: Date,
+    public created_at: Date,
+    public updated_at: Date,
   ) {}
 
   updateDescription(newDescription: string | null) {

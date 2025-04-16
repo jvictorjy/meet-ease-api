@@ -11,8 +11,8 @@ export class PrismaProfileRepository implements ProfileRepository {
         id: profile.id,
         role: profile.role,
         description: profile.description,
-        created_at: profile.createdAt,
-        updated_at: profile.updatedAt,
+        created_at: profile.created_at,
+        updated_at: profile.updated_at,
       },
     });
 
@@ -31,7 +31,7 @@ export class PrismaProfileRepository implements ProfileRepository {
       data: {
         role: profile.role,
         description: profile.description,
-        updated_at: profile.updatedAt,
+        updated_at: profile.updated_at,
       },
     });
 

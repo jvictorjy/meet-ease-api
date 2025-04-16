@@ -16,7 +16,10 @@ export class UpdateProfileUseCase {
       const profile = await this.profileRepository.findById(id);
 
       if (!profile) {
-        throw new Error('Profile not found');
+        throw Exception.new({
+          code: Code.NOT_FOUND.code,
+          overrideMessage: `Profile not found`,
+        });
       }
 
       profile.updateDescription(description);
