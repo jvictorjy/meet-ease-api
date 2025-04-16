@@ -10,7 +10,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { HttpExceptionFilter } from '@app/common/application/exceptions/filter/http-exception.filter';
 import { Code, CodeDescription } from '@core/@shared/domain/error/Code';
 import { Exception } from '@core/@shared/domain/exception/Exception';
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
+import { ConfigService } from '@nestjs/config';
 
 const mockAppLoggerService = {
   info: jest.fn(),
@@ -209,7 +209,7 @@ describe('HttpExceptionFilter', () => {
 
       const mockHttpException = new AxiosError(
         'Bad Request Exception',
-        null,
+        undefined,
         response.config,
         null,
         response,
@@ -231,8 +231,8 @@ describe('HttpExceptionFilter', () => {
         overrideMessage: 'Bad Request Exception',
       });
 
-      Object.defineProperty(ApiServerConfig, 'ENV', {
-        value: 'development',
+      Object.defineProperty(ConfigService, 'NODE_ENV', {
+        value: 'dev',
         configurable: true,
       });
 
@@ -252,8 +252,8 @@ describe('HttpExceptionFilter', () => {
         overrideMessage: 'Bad Request Exception',
       });
 
-      Object.defineProperty(ApiServerConfig, 'ENV', {
-        value: 'production',
+      Object.defineProperty(ConfigService, 'NODE_ENV', {
+        value: 'prod',
         configurable: true,
       });
 
@@ -284,7 +284,7 @@ describe('HttpExceptionFilter', () => {
       const mockHttpException = new AxiosError(
         'ECONNREFUSED',
         'ECONNREFUSED',
-        null,
+        undefined,
         null,
         response,
       );
@@ -323,7 +323,7 @@ describe('HttpExceptionFilter', () => {
 
       const mockHttpException = new AxiosError(
         'Bad Request Exception',
-        null,
+        undefined,
         response.config,
         null,
         response,

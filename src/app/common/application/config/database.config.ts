@@ -4,7 +4,7 @@ import { EnvironmentVariables } from '@core/@shared/infrastructure/config/env.va
 const configService = new ConfigService<EnvironmentVariables, true>(
   ConfigService,
 );
-console.log('configService', configService.get('DB_DIALECT'));
+
 const dialect = configService.get('DB_DIALECT');
 const host = configService.get('DB_HOST');
 const port = configService.get('DB_PORT');

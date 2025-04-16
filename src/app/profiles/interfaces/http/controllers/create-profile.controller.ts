@@ -9,9 +9,9 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
-import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-response.dto';
+import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-request.dto';
 import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { CreateProfileSchemaValidation } from '@app/profiles/interfaces/http/validators/create-profile-schema.validation';
+import { CreateProfileSchemaValidation } from '@app/profiles/application/validators/create-profile-schema.validation';
 
 @Controller('profiles')
 @ApiTags('Profiles')
@@ -29,7 +29,6 @@ export class CreateProfileController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Profile created',
-    type: CreateProfileDtoSwagger,
   })
   @ApiBody({ type: CreateProfileDtoSwagger })
   async handle(

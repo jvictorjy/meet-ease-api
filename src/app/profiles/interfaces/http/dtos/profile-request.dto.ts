@@ -17,5 +17,5 @@ export class CreateProfileDtoSwagger {
     example: faker.lorem.paragraph(),
     nullable: true,
   })
-  description?: string;
+  description?: string | null;
 }
