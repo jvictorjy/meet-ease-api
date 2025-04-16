@@ -2,13 +2,16 @@ import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { CreateProfileUseCase } from '@app/profiles/application/use-cases/create-profiele.use-case';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiNotFoundResponse,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
-import { ProfileResponseDto } from '@app/profiles/interfaces/http/dtos/profile-response.dto';
+import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-response.dto';
+import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
+import { CreateProfileSchemaValidation } from '@app/profiles/interfaces/http/validations/create-profile-schema.validation';
 
 @Controller('profiles')
 @ApiTags('Profiles')
@@ -26,10 +29,16 @@ export class CreateProfileController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Profile created',
-    type: ProfileResponseDto,
+    type: CreateProfileDtoSwagger,
   })
+  @ApiBody({ type: CreateProfileDtoSwagger })
   async handle(
-    @Body() body: { userId: string; role: string; description: string | null },
+    @Body(new ZodValidationPipe(new CreateProfileSchemaValidation()))
+    body: {
+      userId: string;
+      role: string;
+      description: string | null;
+    },
   ) {
     return this.createProfileUseCase.execute(body.role, body.description);
   }

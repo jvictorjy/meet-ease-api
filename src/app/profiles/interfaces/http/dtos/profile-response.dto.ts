@@ -1,13 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker/locale/pt_BR';
+import { z } from 'zod';
 
-export class ProfileResponseDto {
-  @ApiProperty({
-    type: 'string',
-    description: 'Unique identifier of the profile',
-    example: faker.string.uuid(),
-  })
-  id: string;
+export const CreateProfileSchema = z.object({
+  role: z.string().min(1, { message: 'Role is required' }),
+  description: z
+    .string()
+    .max(500, { message: 'Description cannot exceed 500 characters' })
+    .nullable(),
+});
+
+export type CreateProfileDto = z.infer<typeof CreateProfileSchema>;
+
+export class CreateProfileDtoSwagger {
+  id?: string;
 
   @ApiProperty({
     type: 'string',
@@ -22,43 +28,5 @@ export class ProfileResponseDto {
     example: faker.lorem.paragraph(),
     nullable: true,
   })
-  description: string | null;
-
-  @ApiProperty({
-    type: 'string',
-    description: 'Date when the profile was created',
-    example: faker.date.recent(),
-  })
-  createdAt: Date;
-
-  @ApiProperty({
-    type: 'string',
-    description: 'Date when the profile was last updated',
-    example: faker.date.recent(),
-  })
-  updatedAt: Date;
-
-  constructor(
-    id: string,
-    role: string,
-    description: string | null,
-    createdAt: Date,
-    updatedAt: Date,
-  ) {
-    this.id = id;
-    this.role = role;
-    this.description = description;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
-
-  static fromEntity(profile: any): ProfileResponseDto {
-    return new ProfileResponseDto(
-      profile.id,
-      profile.role,
-      profile.description,
-      profile.createdAt,
-      profile.updatedAt,
-    );
-  }
+  description?: string;
 }
