@@ -15,6 +15,7 @@ export class PrismaProfileRepository implements ProfileRepository {
         updated_at: profile.updatedAt,
       },
     });
+
     return new Profile(
       createdProfile.id,
       createdProfile.role,
@@ -33,12 +34,29 @@ export class PrismaProfileRepository implements ProfileRepository {
         updated_at: profile.updatedAt,
       },
     });
+
     return new Profile(
       updatedProfile.id,
       updatedProfile.role,
       updatedProfile.description,
       updatedProfile.created_at,
       updatedProfile.updated_at,
+    );
+  }
+
+  async findById(id: string): Promise<Profile | null> {
+    const foundProfile = await this.prisma.profiles.findUnique({
+      where: { id },
+    });
+
+    if (!foundProfile) return null;
+
+    return new Profile(
+      foundProfile.id,
+      foundProfile.role,
+      foundProfile.description,
+      foundProfile.created_at,
+      foundProfile.updated_at,
     );
   }
 }

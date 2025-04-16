@@ -11,7 +11,7 @@ import {
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
 import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-response.dto';
 import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { CreateProfileSchemaValidation } from '@app/profiles/interfaces/http/validations/create-profile-schema.validation';
+import { CreateProfileSchemaValidation } from '@app/profiles/interfaces/http/validators/create-profile-schema.validation';
 
 @Controller('profiles')
 @ApiTags('Profiles')

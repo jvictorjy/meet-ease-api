@@ -7,7 +7,7 @@ export class Profile {
     public updatedAt: Date,
   ) {}
 
-  updateDescription(newDescription: string) {
+  updateDescription(newDescription: string | null) {
     this.description = newDescription;
   }
 
