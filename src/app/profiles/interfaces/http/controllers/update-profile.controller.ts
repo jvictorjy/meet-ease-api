@@ -10,6 +10,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiNotFoundResponse,
+  ApiOperation,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
@@ -24,25 +25,56 @@ import {
 import { UUIDSchemaValidation } from '@app/common/application/validations';
 import { UpdateProfileSchemaValidation } from '@app/profiles/application/validators/update-profile-schema.validation';
 
+/**
+ * Controller for handling profile update requests.
+ *
+ * This controller provides an endpoint to update an existing profile.
+ * It validates the request parameters and body using Zod schema validation
+ * and delegates the update logic to the `UpdateProfileUseCase`.
+ */
 @Controller('profiles')
-@ApiTags('Profiles')
-@ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
-@ApiNotFoundResponse({ description: 'Not Found', type: ErrorSchema })
+@ApiTags('Profiles') // Swagger tag for grouping endpoints under "Profiles"
+@ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema }) // Swagger response for 400 errors
+@ApiNotFoundResponse({ description: 'Not Found', type: ErrorSchema }) // Swagger response for 404 errors
 @ApiUnprocessableEntityResponse({
   description: 'Unprocessable Entity',
   type: ErrorSchema,
-})
+}) // Swagger response for 422 errors
 export class UpdateProfileController {
+  /**
+   * Constructor for `UpdateProfileController`.
+   *
+   * @param updateProfileUseCase - The use case responsible for updating profiles.
+   */
   constructor(private readonly updateProfileUseCase: UpdateProfileUseCase) {}
 
+  /**
+   * Handles the request to update a profile.
+   *
+   * @param id - The unique identifier of the profile to be updated.
+   *   - Validated using `UUIDSchemaValidation`.
+   * @param body - The request body containing the profile details to update.
+   *   - `description`: An optional description for the profile.
+   *   - Validated using `UpdateProfileSchemaValidation`.
+   *
+   * @returns The updated profile as an instance of `UpdateProfileResponseDto`.
+   *
+   * @throws {BadRequestException} If the request parameters or body are invalid.
+   * @throws {NotFoundException} If the profile with the given ID is not found.
+   * @throws {UnprocessableEntityException} If the profile cannot be updated.
+   */
   @Patch('/:id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.OK) // Sets the HTTP status code to 200
+  @ApiOperation({
+    summary: 'Update profile', // Swagger summary for the endpoint
+    description: 'Update profile', // Swagger description for the endpoint
+  })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Profile updated',
-    type: UpdateProfileResponseDto,
+    description: 'Profile updated', // Swagger response for 200 status
+    type: UpdateProfileResponseDto, // Swagger response type
   })
-  @ApiBody({ type: UpdateProfileRequestDto })
+  @ApiBody({ type: UpdateProfileRequestDto }) // Swagger body schema for the request
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
     @Body(new ZodValidationPipe(new UpdateProfileSchemaValidation()))
