@@ -3,16 +3,22 @@ import { DatabaseModule } from '@app/common/infrastructure/adapters/database/dat
 import { PrismaProfileRepository } from '@app/profiles/infrastructure/repositories/prisma-profile.repository';
 import {
   CreateProfileController,
+  FindAllProfileController,
   UpdateProfileController,
 } from '@app/profiles/interfaces/http/controllers';
 import {
   CreateProfileUseCase,
+  FindAllProfileUseCase,
   UpdateProfileUseCase,
 } from '@app/profiles/application/use-cases';
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [CreateProfileController, UpdateProfileController],
+  controllers: [
+    CreateProfileController,
+    UpdateProfileController,
+    FindAllProfileController,
+  ],
   providers: [
     {
       provide: 'ProfileRepository',
@@ -20,6 +26,7 @@ import {
     },
     CreateProfileUseCase,
     UpdateProfileUseCase,
+    FindAllProfileUseCase,
   ],
 })
 export class ProfilesModule {}
