@@ -5,4 +5,5 @@ export interface ProfileRepository {
   update(profile: Profile): Promise<Profile>;
   findById(id: string): Promise<Profile | null>;
   findAll(): Promise<Profile[]>;
+  delete(id: string): Promise<void>;
 }

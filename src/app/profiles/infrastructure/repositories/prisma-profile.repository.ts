@@ -73,4 +73,10 @@ export class PrismaProfileRepository implements ProfileRepository {
       );
     });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.profiles.delete({
+      where: { id },
+    });
+  }
 }
