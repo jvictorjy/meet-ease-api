@@ -2,6 +2,8 @@ import { v4 as uuid } from 'uuid';
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
 import { Inject, Injectable } from '@nestjs/common';
+import { Exception } from '@core/@shared/domain/exception/Exception';
+import { Code } from '@core/@shared/domain/error/Code';
 
 @Injectable()
 export class CreateProfileUseCase {
@@ -11,13 +13,20 @@ export class CreateProfileUseCase {
   ) {}
 
   async execute(role: string, description: string | null): Promise<Profile> {
-    const profile = new Profile(
-      uuid(),
-      role,
-      description,
-      new Date(),
-      new Date(),
-    );
-    return this.profileRepository.create(profile);
+    try {
+      const profile = new Profile(
+        uuid(),
+        role,
+        description,
+        new Date(),
+        new Date(),
+      );
+      return this.profileRepository.create(profile);
+    } catch (error) {
+      throw Exception.new({
+        code: Code.BAD_REQUEST.code,
+        overrideMessage: `Error creating profile: ${error.message}`,
+      });
+    }
   }
 }
