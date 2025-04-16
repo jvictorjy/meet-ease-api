@@ -5,8 +5,8 @@ export class User {
     public email: string,
     public phone: string,
     public password: string,
-    public createdAt: Date,
-    public updatedAt: Date,
+    public created_at: Date,
+    public updated_at: Date,
   ) {}
 
   updateName(newName: string) {

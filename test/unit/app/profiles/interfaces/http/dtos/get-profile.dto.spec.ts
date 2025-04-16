@@ -1,10 +1,10 @@
-import { FindAllProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
+import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 
 describe('FindAllProfileUseCaseResponseDTO', () => {
   it('creates an instance with all required fields', () => {
-    const dto = new FindAllProfileUseCaseResponseDTO();
+    const dto = new GetProfileUseCaseResponseDTO();
     dto.id = '1';
     dto.role = 'admin';
     dto.description = 'Profile description';
@@ -19,7 +19,7 @@ describe('FindAllProfileUseCaseResponseDTO', () => {
   });
 
   it('allows description to be null', () => {
-    const dto = new FindAllProfileUseCaseResponseDTO();
+    const dto = new GetProfileUseCaseResponseDTO();
     dto.id = '1';
     dto.role = 'admin';
     dto.description = null;
@@ -28,7 +28,7 @@ describe('FindAllProfileUseCaseResponseDTO', () => {
   });
 
   it('allows description to be undefined', () => {
-    const dto = new FindAllProfileUseCaseResponseDTO();
+    const dto = new GetProfileUseCaseResponseDTO();
     dto.id = '1';
     dto.role = 'admin';
 
@@ -36,7 +36,7 @@ describe('FindAllProfileUseCaseResponseDTO', () => {
   });
 
   it('throws an error if id is accessed before being assigned', () => {
-    const dto = new FindAllProfileUseCaseResponseDTO();
+    const dto = new GetProfileUseCaseResponseDTO();
 
     expect(() => {
       if (!dto.id) {
@@ -54,7 +54,7 @@ describe('FindAllProfileUseCaseResponseDTO', () => {
   });
 
   it('throws an error if created_at is accessed before being assigned', () => {
-    const dto = new FindAllProfileUseCaseResponseDTO();
+    const dto = new GetProfileUseCaseResponseDTO();
 
     expect(() => {
       if (!dto.created_at) {
@@ -72,7 +72,7 @@ describe('FindAllProfileUseCaseResponseDTO', () => {
   });
 
   it('throws an error if updated_at is accessed before being assigned', () => {
-    const dto = new FindAllProfileUseCaseResponseDTO();
+    const dto = new GetProfileUseCaseResponseDTO();
 
     expect(() => {
       if (!dto.updated_at) {
