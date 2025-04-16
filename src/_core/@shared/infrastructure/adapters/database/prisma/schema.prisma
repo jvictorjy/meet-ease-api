@@ -24,11 +24,11 @@ model Users {
 }
 
 model Profiles {
-  id          String   @id @default(uuid())
-  role        String?  @db.VarChar(255)
-  description String?  @db.Text
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id          String    @id @default(uuid())
+  role        String    @db.VarChar(255)
+  description String?   @db.Text
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
 
   user       Users[]
 

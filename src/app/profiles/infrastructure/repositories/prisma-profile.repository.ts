@@ -1,0 +1,44 @@
+import { PrismaClient } from '@prisma/client';
+import { Profile } from '@app/profiles/domain/entities/profile.entity';
+import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
+
+export class PrismaProfileRepository implements ProfileRepository {
+  private prisma = new PrismaClient();
+
+  async create(profile: Profile): Promise<Profile> {
+    const createdProfile = await this.prisma.profiles.create({
+      data: {
+        id: profile.id,
+        role: profile.role,
+        description: profile.description,
+        created_at: profile.createdAt,
+        updated_at: profile.updatedAt,
+      },
+    });
+    return new Profile(
+      createdProfile.id,
+      createdProfile.role,
+      createdProfile.description,
+      createdProfile.created_at,
+      createdProfile.updated_at,
+    );
+  }
+
+  async update(profile: Profile): Promise<Profile> {
+    const updatedProfile = await this.prisma.profiles.update({
+      where: { id: profile.id },
+      data: {
+        role: profile.role,
+        description: profile.description,
+        updated_at: profile.updatedAt,
+      },
+    });
+    return new Profile(
+      updatedProfile.id,
+      updatedProfile.role,
+      updatedProfile.description,
+      updatedProfile.created_at,
+      updatedProfile.updated_at,
+    );
+  }
+}
