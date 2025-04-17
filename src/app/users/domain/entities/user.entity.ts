@@ -5,6 +5,7 @@ export class User {
     public email: string,
     public phone: string,
     public password: string,
+    public profile_id: string,
     public created_at: Date,
     public updated_at: Date,
   ) {}
@@ -13,6 +14,6 @@ export class User {
     if (!newName || newName.trim().length === 0) {
       throw new Error('Name cannot be empty');
     }
-    this.name = newName;
+    this.name = newName.trim();
   }
 }

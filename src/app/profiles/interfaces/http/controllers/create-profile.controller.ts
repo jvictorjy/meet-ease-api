@@ -41,7 +41,7 @@ export class CreateProfileController {
    * Handles the creation of a new profile.
    *
    * @param body - The request body containing the profile details.
-   *   - `userId`: The ID of the user creating the profile.
+   *   - `id`: The ID of the user creating the profile.
    *   - `role`: The role of the profile (e.g., admin, user).
    *   - `description`: An optional description for the profile.
    *
