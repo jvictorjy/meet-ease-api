@@ -8,7 +8,7 @@ import { z } from 'zod';
  * to create a profile. It ensures that the `role` field is a non-empty string
  * and that the optional `description` field, if provided, is also a non-empty string.
  */
-export class CreateProfileSchemaValidation implements CreateValidationSchema {
+export class CreateProfileSchemaValidator implements CreateValidationSchema {
   /**
    * Creates and returns the validation schema.
    *

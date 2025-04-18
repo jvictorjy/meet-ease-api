@@ -1,6 +1,10 @@
-import { UserRepository } from '@app/users/domain/repositories/user.repository';
+import {
+  UserRepository,
+  UserUpdatePayload,
+} from '@app/users/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
 import { User } from '@app/users/domain/entities/user.entity';
+import { partialUtil } from 'zod/lib/helpers/partialUtil';
 
 export class PrismaUserRepository implements UserRepository {
   private prisma = new PrismaClient();
@@ -17,7 +21,7 @@ export class PrismaUserRepository implements UserRepository {
           created_at: user.created_at,
           updated_at: user.updated_at,
           profile: {
-            connect: { id: user.profileId },
+            connect: { id: user.profile_id },
           },
         },
       });
@@ -93,15 +97,13 @@ export class PrismaUserRepository implements UserRepository {
     );
   }
 
-  async update(user: User): Promise<User> {
+  async update(user: UserUpdatePayload): Promise<User> {
     const updatedUser = await this.prisma.users.update({
       where: { id: user.id },
       data: {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        password: user.password,
-        profile_id: user.profileId,
         updated_at: new Date(),
       },
     });

@@ -1,7 +1,6 @@
-import { CreateUserUseCase } from '@app/users/application/use-cases';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { CreateUserSchemaValidation } from '@app/users/application/validators/create-user-schema.validation';
+import { CreateUserSchemaValidator } from '@app/users/application/validators/create-user-schema.validator';
 import { CreateUserRequestDto } from '@app/users/interfaces/http/dtos/create-user.dto';
 import {
   ApiBadRequestResponse,
@@ -13,6 +12,7 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { CreateUserUseCase } from '@app/users/application/use-cases/create-user.use-case';
 
 @Controller('users')
 @ApiTags('Users') // Swagger tag for grouping endpoints under "Profiles"
@@ -37,7 +37,7 @@ export class CreateUserController {
   })
   @ApiBody({ type: CreateUserRequestDto }) // Swagger body schema for the request
   async handle(
-    @Body(new ZodValidationPipe(new CreateUserSchemaValidation()))
+    @Body(new ZodValidationPipe(new CreateUserSchemaValidator()))
     body: CreateUserRequestDto,
   ) {
     return this.createUserUseCase.execute(body);

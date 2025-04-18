@@ -1,10 +1,10 @@
-import { CreateProfileSchemaValidation } from '@app/profiles/application/validators/create-profile-schema.validation';
+import { CreateProfileSchemaValidator } from '@app/profiles/application/validators/create-profile-schema.validator';
 
-describe('CreateProfileSchemaValidation', () => {
-  let schemaValidation: CreateProfileSchemaValidation;
+describe('CreateProfileSchemaValidator', () => {
+  let schemaValidation: CreateProfileSchemaValidator;
 
   beforeEach(() => {
-    schemaValidation = new CreateProfileSchemaValidation();
+    schemaValidation = new CreateProfileSchemaValidator();
   });
 
   it('validates successfully with valid role and description', () => {

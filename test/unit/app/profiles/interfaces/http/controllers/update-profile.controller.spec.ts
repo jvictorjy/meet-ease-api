@@ -1,7 +1,7 @@
 import { UpdateProfileUseCase } from '@app/profiles/application/use-cases/update-profile.use-case';
 import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
 import { UUIDSchemaValidation } from '@app/common/application/validations';
-import { UpdateProfileSchemaValidation } from '@app/profiles/application/validators/update-profile-schema.validation';
+import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
 import { UpdateProfileResponseDto } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
 import { UpdateProfileController } from '@app/profiles/interfaces/http/controllers';
 
@@ -99,7 +99,7 @@ describe('UpdateProfileController', () => {
   it('returns HTTP 400 when description validation fails', async () => {
     const invalidBody = { description: 123 };
     const validationPipe = new ZodValidationPipe(
-      new UpdateProfileSchemaValidation(),
+      new UpdateProfileSchemaValidator(),
     );
 
     await expect(

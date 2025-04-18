@@ -8,7 +8,7 @@ import { z } from 'zod';
  * to update a profile. It ensures that the optional `description` field,
  * if provided, is a non-empty string.
  */
-export class UpdateProfileSchemaValidation implements CreateValidationSchema {
+export class UpdateProfileSchemaValidator implements CreateValidationSchema {
   /**
    * Creates and returns the validation schema.
    *

@@ -1,4 +1,3 @@
-import { FindAllProfileUseCase } from '@app/profiles/application/use-cases';
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -10,6 +9,7 @@ import {
 } from '@nestjs/swagger';
 import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
 
 /**
  * Controller for handling requests to retrieve all profiles.

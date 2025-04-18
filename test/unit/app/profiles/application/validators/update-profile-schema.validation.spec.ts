@@ -1,10 +1,10 @@
-import { UpdateProfileSchemaValidation } from '@app/profiles/application/validators';
+import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators';
 
-describe('UpdateProfileSchemaValidation', () => {
-  let schemaValidation: UpdateProfileSchemaValidation;
+describe('UpdateProfileSchemaValidator', () => {
+  let schemaValidation: UpdateProfileSchemaValidator;
 
   beforeEach(() => {
-    schemaValidation = new UpdateProfileSchemaValidation();
+    schemaValidation = new UpdateProfileSchemaValidator();
   });
 
   it('validates successfully with a valid description', () => {

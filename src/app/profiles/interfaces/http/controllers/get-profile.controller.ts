@@ -1,4 +1,3 @@
-import { GetProfileUseCase } from '@app/profiles/application/use-cases';
 import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import {
@@ -12,6 +11,7 @@ import {
 import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
 import { UUIDSchemaValidation } from '@app/common/application/validations';
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profile.use-case';
 
 /**
  * Controller for handling profile retrieval requests.

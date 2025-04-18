@@ -1,8 +1,8 @@
-import { CreateUserSchemaValidation } from '@app/users/application/validators/create-user-schema.validation';
+import { CreateUserSchemaValidator } from '@app/users/application/validators/create-user-schema.validator';
 
-describe('CreateUserSchemaValidation', () => {
+describe('CreateUserSchemaValidator', () => {
   it('fails validation when name is empty', () => {
-    const schema = new CreateUserSchemaValidation().createSchema();
+    const schema = new CreateUserSchemaValidator().createSchema();
     const data = {
       name: '',
       email: 'john.doe@example.com',
@@ -25,7 +25,7 @@ describe('CreateUserSchemaValidation', () => {
   });
 
   it('fails validation when phone is empty', () => {
-    const schema = new CreateUserSchemaValidation().createSchema();
+    const schema = new CreateUserSchemaValidator().createSchema();
     const data = {
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -48,7 +48,7 @@ describe('CreateUserSchemaValidation', () => {
   });
 
   it('fails validation when confirm_password is too short', () => {
-    const schema = new CreateUserSchemaValidation().createSchema();
+    const schema = new CreateUserSchemaValidator().createSchema();
     const data = {
       name: 'John Doe',
       email: 'john.doe@example.com',

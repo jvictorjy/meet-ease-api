@@ -23,7 +23,7 @@ import {
   UpdateProfileResponseDto,
 } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
 import { UUIDSchemaValidation } from '@app/common/application/validations';
-import { UpdateProfileSchemaValidation } from '@app/profiles/application/validators/update-profile-schema.validation';
+import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
 
 /**
  * Controller for handling profile update requests.
@@ -55,7 +55,7 @@ export class UpdateProfileController {
    *   - Validated using `UUIDSchemaValidation`.
    * @param body - The request body containing the profile details to update.
    *   - `description`: An optional description for the profile.
-   *   - Validated using `UpdateProfileSchemaValidation`.
+   *   - Validated using `UpdateProfileSchemaValidator`.
    *
    * @returns The updated profile as an instance of `UpdateProfileResponseDto`.
    *
@@ -77,7 +77,7 @@ export class UpdateProfileController {
   @ApiBody({ type: UpdateProfileRequestDto }) // Swagger body schema for the request
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
-    @Body(new ZodValidationPipe(new UpdateProfileSchemaValidation()))
+    @Body(new ZodValidationPipe(new UpdateProfileSchemaValidator()))
     body: {
       description: string | null;
     },

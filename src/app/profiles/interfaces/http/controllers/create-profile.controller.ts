@@ -12,7 +12,7 @@ import {
 import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
 import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-request.dto';
 import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { CreateProfileSchemaValidation } from '@app/profiles/application/validators/create-profile-schema.validation';
+import { CreateProfileSchemaValidator } from '@app/profiles/application/validators/create-profile-schema.validator';
 
 /**
  * Controller for handling profile creation requests.
@@ -63,7 +63,7 @@ export class CreateProfileController {
   })
   @ApiBody({ type: CreateProfileDtoSwagger }) // Swagger body schema for the request
   async handle(
-    @Body(new ZodValidationPipe(new CreateProfileSchemaValidation()))
+    @Body(new ZodValidationPipe(new CreateProfileSchemaValidator()))
     body: {
       userId: string;
       role: string;
