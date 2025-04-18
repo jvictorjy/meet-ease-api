@@ -3,9 +3,9 @@ import { HashGenerator } from '@app/common/application/cryptography';
 import { CreateUserRequestDto } from '@app/users/interfaces/http/dtos/create-user.dto';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
-import { CreateUserUseCase } from '@app/users/application/use-cases';
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
 import { User } from '@app/users/domain/entities/user.entity';
+import { CreateUserUseCase } from '@app/users/application/use-cases/create-user.use-case';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;

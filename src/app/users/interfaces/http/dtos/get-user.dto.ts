@@ -1,30 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
-export class UpdateUserRequestDto {
-  @ApiProperty({
-    type: 'string',
-    description: 'Name of the user',
-    example: faker.person.fullName(),
-  })
-  name?: string;
-
-  @ApiProperty({
-    type: 'string',
-    description: 'Email of the user',
-    example: faker.internet.email(),
-  })
-  email?: string;
-
-  @ApiProperty({
-    type: 'string',
-    description: 'Phone number of the user',
-    example: faker.phone.number(),
-  })
-  phone?: string;
-}
-
-export class UpdateUserResponseDto {
+export class GetUserResponseDto {
   @ApiProperty({
     type: 'string',
     description: 'ID of the user',

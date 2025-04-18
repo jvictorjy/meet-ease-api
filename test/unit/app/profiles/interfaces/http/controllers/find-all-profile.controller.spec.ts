@@ -1,6 +1,6 @@
-import { FindAllProfileUseCase } from '@app/profiles/application/use-cases';
 import { NotFoundException } from '@nestjs/common';
-import { FindAllProfileController } from '@app/profiles/interfaces/http/controllers';
+import { FindAllProfileController } from '@app/profiles/interfaces/http/controllers/find-all-profile.controller';
+import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
 
 describe('FindAllProfileController', () => {
   let controller: FindAllProfileController;

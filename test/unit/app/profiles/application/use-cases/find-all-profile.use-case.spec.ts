@@ -1,6 +1,6 @@
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
-import { FindAllProfileUseCase } from '@app/profiles/application/use-cases';
+import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
 
 describe('FindAllProfileUseCase', () => {
   let useCase: FindAllProfileUseCase;

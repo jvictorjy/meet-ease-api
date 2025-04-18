@@ -3,11 +3,10 @@ import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.
 import { UUIDSchemaValidation } from '@app/common/application/validations';
 import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
 import { UpdateProfileResponseDto } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
-import { UpdateProfileController } from '@app/profiles/interfaces/http/controllers';
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
+import { UpdateProfileController } from '@app/profiles/interfaces/http/controllers/update-profile.controller';
 
 describe('UpdateProfileController', () => {
   let controller: UpdateProfileController;

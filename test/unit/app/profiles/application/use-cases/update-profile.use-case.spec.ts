@@ -2,7 +2,7 @@ import { ProfileRepository } from '@app/profiles/domain/repositories/profile.rep
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
-import { UpdateProfileUseCase } from '@app/profiles/application/use-cases';
+import { UpdateProfileUseCase } from '@app/profiles/application/use-cases/update-profile.use-case';
 
 describe('UpdateProfileUseCase', () => {
   let useCase: UpdateProfileUseCase;
