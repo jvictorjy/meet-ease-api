@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PrismaProfileRepository } from '@app/profiles/infrastructure/repositories/prisma-profile.repository';
+import { PrismaProfileRepository } from '@app/profiles/infrastructure/persistence/prisma-profile.repository';
 import { Controllers } from '@app/profiles/interfaces/http/controllers';
 import { UseCases } from '@app/profiles/application/use-cases';
 

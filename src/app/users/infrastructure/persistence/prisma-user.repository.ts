@@ -4,7 +4,6 @@ import {
 } from '@app/users/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
 import { User } from '@app/users/domain/entities/user.entity';
-import { partialUtil } from 'zod/lib/helpers/partialUtil';
 
 export class PrismaUserRepository implements UserRepository {
   private prisma = new PrismaClient();
