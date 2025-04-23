@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '@app/common/infrastructure/adapters/database/database.module';
 import { CryptographyModule } from '@app/common/infrastructure/adapters/cryptography/cryptography.module';
 import { PrismaUserRepository } from '@app/users/infrastructure/repositories/prisma-user.repository';
 import { BcryptHasher } from '@app/common/infrastructure/adapters/cryptography/bcryptjs/bcrypt-hasher';
@@ -8,7 +7,7 @@ import { UseCases } from '@app/users/application/use-cases';
 import { Controllers } from '@app/users/interfaces/http/controllers';
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [CryptographyModule],
   controllers: [...Controllers],
   providers: [
     {
