@@ -2,10 +2,12 @@ import { CreateUserController } from '@app/users/interfaces/http/controllers/cre
 import { UpdateUserController } from '@app/users/interfaces/http/controllers/update-user.controller';
 import { GetUserByIdController } from '@app/users/interfaces/http/controllers/get-user-by-id.controller';
 import { GetAllUsersController } from '@app/users/interfaces/http/controllers/get-all-users.controller';
+import { DeleteUserController } from '@app/users/interfaces/http/controllers/delete-user.controller';
 
 export const Controllers = [
   CreateUserController,
   UpdateUserController,
   GetUserByIdController,
   GetAllUsersController,
+  DeleteUserController,
 ];

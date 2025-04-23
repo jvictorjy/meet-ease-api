@@ -49,6 +49,12 @@ describe('CreateUserUseCase', () => {
 
     jest.spyOn(profileRepository, 'findById').mockResolvedValue({
       id: 'valid-profile',
+      role: 'user',
+      description: 'Test profile',
+      created_at: new Date(),
+      updated_at: new Date(),
+      updateDescription: jest.fn(),
+      hasRole: jest.fn(),
     });
 
     jest
@@ -84,9 +90,15 @@ describe('CreateUserUseCase', () => {
       profile_id: 'valid-profile',
     };
 
-    jest
-      .spyOn(profileRepository, 'findById')
-      .mockResolvedValue({ id: 'valid-profile' });
+    jest.spyOn(profileRepository, 'findById').mockResolvedValue({
+      id: 'valid-profile',
+      role: 'user',
+      description: 'Test profile',
+      created_at: new Date(),
+      updated_at: new Date(),
+      updateDescription: jest.fn(),
+      hasRole: jest.fn(),
+    });
     jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(null);
     jest.spyOn(hashProvider, 'hash').mockResolvedValue('securePassword');
     jest.spyOn(userRepository, 'create').mockResolvedValue(undefined);
