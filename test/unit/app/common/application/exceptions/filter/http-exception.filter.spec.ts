@@ -7,7 +7,7 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { HttpExceptionFilter } from '@app/common/application/exceptions/filter/http-exception.filter';
+import { HttpExceptionFilter } from '@app/@common/application/exceptions/filter/http-exception.filter';
 import { Code, CodeDescription } from '@core/@shared/domain/error/Code';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { ConfigService } from '@nestjs/config';

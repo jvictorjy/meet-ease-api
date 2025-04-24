@@ -2,8 +2,8 @@ import { ArgumentsHost, InternalServerErrorException } from '@nestjs/common';
 import { Response } from 'express';
 import { ZodError } from 'zod';
 
-import { ZodValidationExceptionFilter } from '@app/common/application/exceptions/filter/zod-validation-exception.filter';
-import { ZodValidationException } from '@app/common/application/pipes/zod-validation.pipe';
+import { ZodValidationExceptionFilter } from '@app/@common/application/exceptions/filter/zod-validation-exception.filter';
+import { ZodValidationException } from '@app/@common/application/pipes/zod-validation.pipe';
 
 describe('ZodValidationExceptionFilter', () => {
   let filter: ZodValidationExceptionFilter;

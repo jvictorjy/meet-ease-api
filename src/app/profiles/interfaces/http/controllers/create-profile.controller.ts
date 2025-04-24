@@ -2,6 +2,7 @@ import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { CreateProfileUseCase } from '@app/profiles/application/use-cases/create-profiele.use-case';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
@@ -9,9 +10,9 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-request.dto';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { CreateProfileSchemaValidator } from '@app/profiles/application/validators/create-profile-schema.validator';
 
 /**
@@ -52,6 +53,7 @@ export class CreateProfileController {
    * @throws {UnprocessableEntityException} If the profile cannot be created.
    */
   @Post()
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED) // Sets the HTTP status code to 201
   @ApiOperation({
     summary: 'Create profile', // Swagger summary for the endpoint

@@ -1,6 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -8,7 +9,7 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
 
 /**
@@ -44,6 +45,7 @@ export class FindAllProfileController {
    * @throws {UnprocessableEntityException} If the request cannot be processed.
    */
   @Get()
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK) // Sets the HTTP status code to 200
   @ApiOperation({
     summary: 'List profiles', // Swagger summary for the endpoint

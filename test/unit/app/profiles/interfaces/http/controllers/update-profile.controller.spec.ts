@@ -1,6 +1,6 @@
 import { UpdateProfileUseCase } from '@app/profiles/application/use-cases/update-profile.use-case';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
 import { UpdateProfileResponseDto } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
 import { Test, TestingModule } from '@nestjs/testing';

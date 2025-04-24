@@ -1,4 +1,4 @@
-import { CreateValidationSchema } from '@app/common/application/validators/zod/schemas/create-schema.interface';
+import { CreateValidationSchema } from '@app/@common/application/validators/zod/schemas/create-schema.interface';
 import { z, ZodIssueCode } from 'zod';
 
 export class CreateUserSchemaValidator implements CreateValidationSchema {

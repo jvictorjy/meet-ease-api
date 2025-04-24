@@ -1,5 +1,5 @@
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
-import { HashGenerator } from '@app/common/application/cryptography';
+import { HashGenerator } from '@app/@common/application/cryptography';
 import { CreateUserRequestDto } from '@app/users/interfaces/http/dtos/create-user.dto';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';

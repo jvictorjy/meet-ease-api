@@ -30,8 +30,8 @@ export class PrismaUserRepository implements UserRepository {
         createdUser.name,
         createdUser.email,
         createdUser.phone,
-        createdUser.profile_id,
         createdUser.password,
+        createdUser.profile_id,
         createdUser.created_at,
         createdUser.updated_at,
       );
@@ -53,8 +53,8 @@ export class PrismaUserRepository implements UserRepository {
       foundUser.name,
       foundUser.email,
       foundUser.phone,
-      foundUser.profile_id,
       foundUser.password,
+      foundUser.profile_id,
       foundUser.created_at,
       foundUser.updated_at,
     );
@@ -69,8 +69,8 @@ export class PrismaUserRepository implements UserRepository {
         user.name,
         user.email,
         user.phone,
-        user.profile_id,
         user.password,
+        user.profile_id,
         user.created_at,
         user.updated_at,
       );
@@ -89,8 +89,8 @@ export class PrismaUserRepository implements UserRepository {
       foundUser.name,
       foundUser.email,
       foundUser.phone,
-      foundUser.profile_id,
       foundUser.password,
+      foundUser.profile_id,
       foundUser.created_at,
       foundUser.updated_at,
     );
@@ -112,8 +112,8 @@ export class PrismaUserRepository implements UserRepository {
       updatedUser.name,
       updatedUser.email,
       updatedUser.phone,
-      updatedUser.profile_id,
       updatedUser.password,
+      updatedUser.profile_id,
       updatedUser.created_at,
       updatedUser.updated_at,
     );

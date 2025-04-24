@@ -3,13 +3,14 @@ import { GetUserResponseDto } from '@app/users/interfaces/http/dtos/get-user.dto
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 
 @Controller('users')
 @ApiTags('Users')
@@ -23,6 +24,7 @@ export class GetAllUsersController {
   constructor(private readonly getAllUsersUseCase: GetAllUsersUseCase) {}
 
   @Get()
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get all users',

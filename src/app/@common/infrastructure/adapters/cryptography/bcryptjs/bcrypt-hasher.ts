@@ -2,7 +2,7 @@ import { hash, compare } from 'bcryptjs';
 import {
   HashComparer,
   HashGenerator,
-} from '@app/common/application/cryptography';
+} from '@app/@common/application/cryptography';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

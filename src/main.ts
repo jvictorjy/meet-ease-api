@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MainModule } from './main.module';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@core/@shared/infrastructure/config/env.validation';
-import { applySwagger } from '@app/common/application/config';
+import { applySwagger } from '@app/@common/application/config';
 import { Logger } from '@nestjs/common';
 
 const logger = new Logger('Main');

@@ -8,15 +8,16 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 
 @Controller('users')
 @ApiTags('Users')
@@ -30,6 +31,7 @@ export class DeleteUserController {
   constructor(private readonly deleteUserUseCase: DeleteUserUseCase) {}
 
   @Delete(':id')
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Delete user',

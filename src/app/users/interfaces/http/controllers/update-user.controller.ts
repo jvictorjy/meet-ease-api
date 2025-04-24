@@ -7,8 +7,8 @@ import {
   Param,
   Patch,
 } from '@nestjs/common';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { UpdateUserSchemaValidator } from '@app/users/application/validators/update-user-schema.validator';
 import {
   UpdateUserRequestDto,
@@ -16,6 +16,7 @@ import {
 } from '@app/users/interfaces/http/dtos/update-user.dto';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
@@ -23,7 +24,7 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 
 /**
  * Controller for handling user update operations.
@@ -50,7 +51,8 @@ export class UpdateUserController {
    * @param body - The request body containing user update details, validated using ZodValidationPipe.
    * @returns The updated user data.
    */
-  @Patch('/:id')
+  @Patch(':id')
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK) // Sets the HTTP status code to 200 for successful responses
   @ApiOperation({
     summary: 'Update user', // Provides a summary for the Swagger documentation

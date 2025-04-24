@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { CreateUserSchemaValidator } from '@app/users/application/validators/create-user-schema.validator';
 import { CreateUserRequestDto } from '@app/users/interfaces/http/dtos/create-user.dto';
 import {
@@ -11,8 +11,9 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { CreateUserUseCase } from '@app/users/application/use-cases/create-user.use-case';
+import { Public } from '@app/auth/infrastructure/jwt/public';
 
 @Controller('users')
 @ApiTags('Users') // Swagger tag for grouping endpoints under "Profiles"
@@ -26,6 +27,7 @@ export class CreateUserController {
   constructor(private readonly createUserUseCase: CreateUserUseCase) {}
 
   @Post()
+  @Public()
   @HttpCode(HttpStatus.CREATED) // Sets the HTTP status code to 201
   @ApiOperation({
     summary: 'Create user', // Swagger summary for the endpoint

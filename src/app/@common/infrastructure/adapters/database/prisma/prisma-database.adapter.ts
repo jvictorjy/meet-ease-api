@@ -5,7 +5,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
-import { DATABASE_URL } from '@app/common/application/config';
+import { DATABASE_URL } from '@app/@common/application/config';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@core/@shared/infrastructure/config/env.validation';
 

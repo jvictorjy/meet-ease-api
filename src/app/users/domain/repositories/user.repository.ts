@@ -1,4 +1,4 @@
-import { User } from '../entities/user.entity';
+import { User } from '@app/users/domain/entities/user.entity';
 
 export interface UserUpdatePayload {
   id: string;

@@ -2,15 +2,16 @@ import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profile.use-case';
 
 /**
@@ -46,7 +47,8 @@ export class GetProfileController {
    * @throws {NotFoundException} If the profile is not found.
    * @throws {UnprocessableEntityException} If the profile cannot be retrieved.
    */
-  @Get('/:id')
+  @Get(':id')
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK) // Sets the HTTP status code to 200
   @ApiOperation({
     summary: 'Get profile', // Swagger summary for the endpoint

@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
 import { User } from '@app/users/domain/entities/user.entity';
 import { CreateUserRequestDto } from '@app/users/interfaces/http/dtos/create-user.dto';
-import { HashGenerator } from '@app/common/application/cryptography';
+import { HashGenerator } from '@app/@common/application/cryptography';
 import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
@@ -21,7 +21,7 @@ export class CreateUserUseCase {
     private readonly hashProvider: HashGenerator,
   ) {}
 
-  async execute(data: CreateUserRequestDto): Promise<User> {
+  async execute(data: CreateUserRequestDto): Promise<void> {
     try {
       const { name, email, phone, password, profile_id } = data;
 
@@ -57,8 +57,6 @@ export class CreateUserUseCase {
       );
 
       await this.userRepository.create(user);
-
-      return user;
     } catch (error) {
       throw Exception.new({
         code: Code.BAD_REQUEST.code,

@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserRequestDto } from '@app/users/interfaces/http/dtos/create-user.dto';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { CreateUserUseCase } from '@app/users/application/use-cases/create-user.use-case';
 import { CreateUserController } from '@app/users/interfaces/http/controllers/create-user.controller';
 

@@ -1,17 +1,18 @@
 import { GetUserByIdUseCase } from '@app/users/application/use-cases/get-user-by-id.use-case';
 import { GetUserResponseDto } from '@app/users/interfaces/http/dtos/get-user.dto';
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 
 @Controller('users')
 @ApiTags('Users') // Swagger tag for grouping endpoints under "Profiles"
@@ -24,7 +25,8 @@ import { ErrorSchema } from '@app/common/application/documentations/openapi/swag
 export class GetUserByIdController {
   constructor(private readonly getUserByIdUseCase: GetUserByIdUseCase) {}
 
-  @Get('/:id')
+  @Get(':id')
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK) // Sets the HTTP status code to 200
   @ApiOperation({
     summary: 'Get user', // Swagger summary for the endpoint

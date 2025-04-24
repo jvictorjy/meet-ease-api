@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
@@ -15,14 +16,14 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { ErrorSchema } from '@app/common/application/documentations/openapi/swagger/error.schema';
-import { ZodValidationPipe } from '@app/common/application/pipes/zod-validation.pipe';
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { UpdateProfileUseCase } from '@app/profiles/application/use-cases/update-profile.use-case';
 import {
   UpdateProfileRequestDto,
   UpdateProfileResponseDto,
 } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
-import { UUIDSchemaValidation } from '@app/common/application/validations';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
 
 /**
@@ -63,7 +64,8 @@ export class UpdateProfileController {
    * @throws {NotFoundException} If the profile with the given ID is not found.
    * @throws {UnprocessableEntityException} If the profile cannot be updated.
    */
-  @Patch('/:id')
+  @Patch(':id')
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK) // Sets the HTTP status code to 200
   @ApiOperation({
     summary: 'Update profile', // Swagger summary for the endpoint

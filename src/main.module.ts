@@ -5,10 +5,11 @@ import { APP_FILTER } from '@nestjs/core';
 import {
   HttpExceptionFilter,
   ZodValidationExceptionFilter,
-} from '@app/common/application/exceptions/filter';
+} from '@app/@common/application/exceptions/filter';
 import { MainController } from './main.controller';
 import { UsersModule } from '@app/users/users.module';
 import { ProfilesModule } from '@app/profiles/profiles.module';
+import { AuthModule } from '@app/auth/auth.module';
 
 const providers: Provider[] = [
   {
@@ -26,6 +27,7 @@ const providers: Provider[] = [
     ConfigModule.forRoot({ isGlobal: true, validate }),
     UsersModule,
     ProfilesModule,
+    AuthModule,
   ],
   controllers: [MainController],
   providers,
