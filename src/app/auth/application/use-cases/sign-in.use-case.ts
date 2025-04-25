@@ -1,12 +1,13 @@
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  SignInDto,
-  SignInResponseDto,
-} from '@app/auth/interfaces/http/dtos/sign-in.dto';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { Encrypter, HashComparer } from '@app/@common/application/cryptography';
+import { AuthService } from '@app/auth/application/services/auth.service';
+import {
+  SignInDto,
+  SignInResponseDto,
+} from '@app/auth/application/dtos/sign-in.dto';
 
 @Injectable()
 export class SignInUseCase {
@@ -19,6 +20,9 @@ export class SignInUseCase {
 
     @Inject('Encrypter')
     private readonly encrypter: Encrypter,
+
+    @Inject('AuthService')
+    private readonly authService: AuthService,
   ) {}
 
   async execute({ email, password }: SignInDto): Promise<SignInResponseDto> {
@@ -28,7 +32,7 @@ export class SignInUseCase {
       if (!user) {
         throw Exception.new({
           code: Code.UNAUTHORIZED.code,
-          overrideMessage: `User or password invalid`,
+          overrideMessage: `Invalid credentials`,
         });
       }
 
@@ -40,13 +44,14 @@ export class SignInUseCase {
       if (!isPasswordValid) {
         throw Exception.new({
           code: Code.UNAUTHORIZED.code,
-          overrideMessage: `User or password invalid`,
+          overrideMessage: `Invalid credentials`,
         });
       }
 
-      const accessToken = await this.encrypter.encrypt({
-        sub: user.id.toString(),
-      });
+      const accessToken = await this.authService.generateToken(
+        user.id,
+        user.profile_id,
+      );
 
       return {
         accessToken,

@@ -11,12 +11,13 @@ import { ErrorSchema } from '@app/@common/application/documentations/openapi/swa
 
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { SignInUseCase } from '@app/auth/application/use-cases/sign-in.use-case';
+
+import { Public } from '@app/auth/infrastructure/jwt/public';
+import { SignInSchemaValidators } from '@app/auth/application/validators/sign-in.schema.validators';
 import {
   SignInDto,
   SignInResponseDto,
-} from '@app/auth/interfaces/http/dtos/sign-in.dto';
-import { Public } from '@app/auth/infrastructure/jwt/public';
-import { SignInSchemaValidators } from '@app/auth/application/validators/sign-in.schema.validators';
+} from '@app/auth/application/dtos/sign-in.dto';
 
 @Controller('auth')
 @ApiTags('Auth')

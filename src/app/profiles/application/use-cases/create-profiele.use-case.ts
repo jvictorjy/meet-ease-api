@@ -13,7 +13,7 @@ export class CreateProfileUseCase {
     private readonly profileRepository: ProfileRepository,
   ) {}
 
-  async execute(payload: CreateProfileDto): Promise<Profile> {
+  async execute(payload: CreateProfileDto): Promise<void> {
     try {
       const profile = new Profile(
         uuid(), // Generates a unique ID for the profile
@@ -23,7 +23,7 @@ export class CreateProfileUseCase {
         new Date(),
         new Date(),
       );
-      return this.profileRepository.create(profile); // Persists the profile to the repository
+      await this.profileRepository.create(profile); // Persists the profile to the repository
     } catch (error) {
       if (error instanceof Exception) {
         throw error;

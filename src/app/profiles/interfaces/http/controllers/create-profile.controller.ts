@@ -14,6 +14,7 @@ import { ErrorSchema } from '@app/@common/application/documentations/openapi/swa
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { CreateProfileSchemaValidator } from '@app/profiles/application/validators/create-profile-schema.validator';
 import { CreateProfileDto } from '@app/profiles/application/dto/create-profile.dto';
+import { Public } from '@app/auth/infrastructure/jwt/public';
 
 /**
  * Controller for handling profile creation requests.
@@ -53,7 +54,7 @@ export class CreateProfileController {
    * @throws {UnprocessableEntityException} If the profile cannot be created.
    */
   @Post()
-  @ApiBearerAuth()
+  @Public()
   @HttpCode(HttpStatus.CREATED) // Sets the HTTP status code to 201
   @ApiOperation({
     summary: 'Create profile', // Swagger summary for the endpoint
