@@ -1,7 +1,7 @@
 import {
   UpdateProfileRequestDto,
   UpdateProfileResponseDto,
-} from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
+} from '@app/profiles/interfaces/http/dto/update-profile-request.dto';
 
 describe('UpdateProfileRequestDto', () => {
   it('allows description to be null', () => {

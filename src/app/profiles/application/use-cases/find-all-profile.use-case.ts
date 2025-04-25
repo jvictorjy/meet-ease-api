@@ -1,31 +1,28 @@
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
+import { Exception } from '@core/@shared/domain/exception/Exception';
+import { Code } from '@core/@shared/domain/error/Code';
 
-/**
- * Use case for retrieving all profiles.
- *
- * This class handles the business logic for fetching all profiles
- * from the repository.
- */
 @Injectable()
 export class FindAllProfileUseCase {
-  /**
-   * Constructor for `FindAllProfileUseCase`.
-   *
-   * @param profileRepository - The repository responsible for managing profiles.
-   */
   constructor(
     @Inject('ProfileRepository')
     private readonly profileRepository: ProfileRepository,
   ) {}
 
-  /**
-   * Executes the process of retrieving all profiles.
-   *
-   * @returns A promise that resolves to an array of profiles.
-   */
   async execute(): Promise<Profile[]> {
-    return this.profileRepository.findAll();
+    try {
+      return this.profileRepository.findAll();
+    } catch (error) {
+      if (error instanceof Exception) {
+        throw error;
+      }
+
+      throw Exception.new({
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: 'An unexpected error occurred',
+      });
+    }
   }
 }

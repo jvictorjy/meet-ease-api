@@ -1,43 +1,62 @@
-/**
- * Represents a profile entity.
- *
- * This class defines the structure and behavior of a profile, including
- * its properties and methods for updating the description and checking roles.
- */
-export class Profile {
-  /**
-   * Constructs a new `Profile` instance.
-   *
-   * @param id - The unique identifier of the profile.
-   * @param role - The role associated with the profile.
-   * @param description - A description of the profile, which can be null.
-   * @param created_at - The date and time when the profile was created.
-   * @param updated_at - The date and time when the profile was last updated.
-   */
-  constructor(
-    public readonly id: string,
-    public role: string,
-    public description: string | null,
-    public created_at: Date,
-    public updated_at: Date,
-  ) {}
+import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 
-  /**
-   * Updates the description of the profile.
-   *
-   * @param newDescription - The new description to set for the profile. Can be null.
-   */
-  updateDescription(newDescription: string | null) {
-    this.description = newDescription;
+export class Profile {
+  constructor(
+    private readonly _id: string,
+    private readonly _name: string,
+    private readonly _description: string,
+    private readonly _role: RoleName,
+    private readonly _created_at: Date,
+    private readonly _updated_at: Date,
+  ) {
+    this.validateProfile();
   }
 
-  /**
-   * Checks if the profile has the specified role.
-   *
-   * @param role - The role to check against the profile's role.
-   * @returns `true` if the profile has the specified role, otherwise `false`.
-   */
-  hasRole(role: string): boolean {
-    return this.role === role;
+  get id(): string {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get description(): string {
+    return this._description;
+  }
+
+  get role(): RoleName {
+    return this._role;
+  }
+
+  get created_at(): Date {
+    return this._created_at;
+  }
+
+  get updated_at(): Date {
+    return this._updated_at;
+  }
+
+  private validateProfile(): void {
+    this.validateId();
+    this.validateName();
+    this.validateRole();
+  }
+
+  private validateId(): void {
+    if (!this._id) {
+      throw new Error('Profile id is required');
+    }
+  }
+
+  private validateName(): void {
+    if (!this._name) {
+      throw new Error('Profile name is required');
+    }
+  }
+
+  private validateRole(): void {
+    if (!this._role) {
+      throw new Error('Profile role is required');
+    }
   }
 }

@@ -10,7 +10,7 @@ export class PrismaUserRepository implements UserRepository {
 
   async create(user: User): Promise<User> {
     try {
-      const createdUser = await this.prisma.users.create({
+      const createdUser = await this.prisma.user.create({
         data: {
           id: user.id,
           name: user.name,
@@ -42,7 +42,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async findById(id: string): Promise<any | null> {
-    const foundUser = await this.prisma.users.findUnique({
+    const foundUser = await this.prisma.user.findUnique({
       where: { id },
     });
 
@@ -61,7 +61,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async findAll(): Promise<any[]> {
-    const foundUsers = await this.prisma.users.findMany();
+    const foundUsers = await this.prisma.user.findMany();
 
     return foundUsers.map((user) => {
       return new User(
@@ -78,7 +78,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<any | null> {
-    const foundUser = await this.prisma.users.findUnique({
+    const foundUser = await this.prisma.user.findUnique({
       where: { email },
     });
 
@@ -97,7 +97,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async update(user: UserUpdatePayload): Promise<User> {
-    const updatedUser = await this.prisma.users.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id: user.id },
       data: {
         name: user.name,
@@ -120,7 +120,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.users.delete({
+    await this.prisma.user.delete({
       where: { id },
     });
   }

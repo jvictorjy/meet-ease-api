@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   id         String    @id @default(uuid())
   name       String    @db.VarChar(255)
   email      String    @unique @db.VarChar(255)
@@ -18,19 +18,27 @@ model Users {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
   
-  profile    Profiles @relation(fields: [profile_id], references: [id])
+  profile    Profile @relation(fields: [profile_id], references: [id])
 
   @@map("users")
 }
 
-model Profiles {
+model Profile {
   id          String    @id @default(uuid())
-  role        String    @db.VarChar(255)
+  name        String    @db.VarChar(255)
+  role        RoleName  
   description String?   @db.Text
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
-  user       Users[]
+  user        User[]
 
   @@map("profiles")
+}
+
+enum RoleName {
+  ADMIN
+  CORE
+  LEADER
+  SCHEDULER
 }

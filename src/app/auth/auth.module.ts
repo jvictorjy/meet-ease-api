@@ -28,13 +28,11 @@ const providers: Provider[] = [
     JwtModule.registerAsync({
       global: true,
       useFactory() {
-        const privateKey = configService.get('JWT_PRIVATE_KEY');
-        const publicKey = configService.get('JWT_PUBLIC_KEY');
+        // const privateKey = configService.get('JWT_PRIVATE_KEY');
+        // const publicKey = configService.get('JWT_PUBLIC_KEY');
 
         return {
-          signOptions: { expiresIn: '24h', algorithm: 'RS256' },
-          privateKey: Buffer.from(privateKey, 'base64'),
-          publicKey: Buffer.from(publicKey, 'base64'),
+          signOptions: { expiresIn: '24h', algorithm: 'HS256' },
         };
       },
     }),

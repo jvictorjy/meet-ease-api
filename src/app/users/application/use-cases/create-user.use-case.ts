@@ -58,9 +58,13 @@ export class CreateUserUseCase {
 
       await this.userRepository.create(user);
     } catch (error) {
+      if (error instanceof Exception) {
+        throw error;
+      }
+
       throw Exception.new({
-        code: Code.BAD_REQUEST.code,
-        overrideMessage: `Error creating user: ${error.message}`, // Custom error message
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: 'An unexpected error occurred',
       });
     }
   }

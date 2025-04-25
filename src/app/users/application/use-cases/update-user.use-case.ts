@@ -40,9 +40,13 @@ export class UpdateUserUseCase {
         updated_at: userUpdated.updated_at,
       };
     } catch (error) {
+      if (error instanceof Exception) {
+        throw error;
+      }
+
       throw Exception.new({
-        code: Code.BAD_REQUEST.code,
-        overrideMessage: `Error updating user: ${error.message}`, // Custom error message
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: 'An unexpected error occurred',
       });
     }
   }

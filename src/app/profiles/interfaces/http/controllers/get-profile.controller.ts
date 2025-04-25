@@ -1,4 +1,3 @@
-import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -13,6 +12,7 @@ import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profile.use-case';
+import { GetProfileUseCaseResponseDto } from '@app/profiles/application/dto/get-profile.dto';
 
 /**
  * Controller for handling profile retrieval requests.
@@ -57,11 +57,11 @@ export class GetProfileController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get profile by ID', // Swagger response for 200 status
-    type: GetProfileUseCaseResponseDTO, // Swagger response type
+    type: GetProfileUseCaseResponseDto, // Swagger response type
   })
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
-  ): Promise<GetProfileUseCaseResponseDTO> {
+  ): Promise<GetProfileUseCaseResponseDto> {
     return this.getProfileUseCase.execute(id);
   }
 }

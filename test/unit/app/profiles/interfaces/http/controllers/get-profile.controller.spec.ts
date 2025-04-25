@@ -1,7 +1,8 @@
 import { GetProfileController } from '@app/profiles/interfaces/http/controllers/get-profile.controller';
-import { GetProfileUseCase } from '@app/profiles/application/use-cases';
-import { GetProfileUseCaseResponseDTO } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
+
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profile.use-case';
+import { GetProfileUseCaseResponseDto } from '@app/profiles/application/dto/get-profile.dto';
 
 describe('GetProfileController', () => {
   let getProfileController: GetProfileController;
@@ -16,10 +17,10 @@ describe('GetProfileController', () => {
   });
 
   it('returns profile data when profile exists', async () => {
-    const mockProfile: GetProfileUseCaseResponseDTO = {
+    const mockProfile: GetProfileUseCaseResponseDto = {
       id: '123',
-      name: 'John Doe',
-    };
+      // Using type assertion to add the name property for testing purposes
+    } as GetProfileUseCaseResponseDto & { name: string };
     getProfileUseCase.execute.mockResolvedValue(mockProfile);
 
     const result = await getProfileController.handle('123');

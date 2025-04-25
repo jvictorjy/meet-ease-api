@@ -19,12 +19,13 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { UpdateProfileUseCase } from '@app/profiles/application/use-cases/update-profile.use-case';
+
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
+import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
 import {
   UpdateProfileRequestDto,
   UpdateProfileResponseDto,
-} from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
-import { UUIDSchemaValidation } from '@app/@common/application/validations';
-import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
+} from '@app/profiles/application/dto/update-profile-request.dto';
 
 /**
  * Controller for handling profile update requests.
@@ -80,10 +81,8 @@ export class UpdateProfileController {
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
     @Body(new ZodValidationPipe(new UpdateProfileSchemaValidator()))
-    body: {
-      description: string | null;
-    },
+    body: UpdateProfileResponseDto,
   ) {
-    return this.updateProfileUseCase.execute(id, body.description);
+    return this.updateProfileUseCase.execute(id, body);
   }
 }

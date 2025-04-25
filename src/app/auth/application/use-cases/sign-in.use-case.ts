@@ -27,7 +27,7 @@ export class SignInUseCase {
 
       if (!user) {
         throw Exception.new({
-          code: Code.NOT_FOUND.code,
+          code: Code.UNAUTHORIZED.code,
           overrideMessage: `User or password invalid`,
         });
       }

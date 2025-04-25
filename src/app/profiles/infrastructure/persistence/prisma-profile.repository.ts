@@ -1,81 +1,91 @@
 import { PrismaClient } from '@prisma/client';
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
+import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 
 export class PrismaProfileRepository implements ProfileRepository {
   private prisma = new PrismaClient();
 
   async create(profile: Profile): Promise<Profile> {
-    const createdProfile = await this.prisma.profiles.create({
+    const profileData = await this.prisma.profile.create({
       data: {
         id: profile.id,
-        role: profile.role,
+        name: profile.name,
         description: profile.description,
+        role: profile.role,
         created_at: profile.created_at,
         updated_at: profile.updated_at,
       },
     });
 
     return new Profile(
-      createdProfile.id,
-      createdProfile.role,
-      createdProfile.description,
-      createdProfile.created_at,
-      createdProfile.updated_at,
+      profileData.id,
+      profileData.name,
+      profileData.description ?? '',
+      profileData.role as RoleName,
+      profileData.created_at,
+      profileData.updated_at,
     );
   }
 
   async update(profile: Profile): Promise<Profile> {
-    const updatedProfile = await this.prisma.profiles.update({
+    const profileData = await this.prisma.profile.update({
       where: { id: profile.id },
       data: {
-        role: profile.role,
+        name: profile.name,
         description: profile.description,
-        updated_at: profile.updated_at,
+        role: profile.role,
+        updated_at: new Date(),
       },
     });
 
     return new Profile(
-      updatedProfile.id,
-      updatedProfile.role,
-      updatedProfile.description,
-      updatedProfile.created_at,
-      updatedProfile.updated_at,
+      profileData.id,
+      profileData.name,
+      profileData.description || '',
+      profileData.role as RoleName,
+      profileData.created_at,
+      profileData.updated_at,
     );
   }
 
   async findById(id: string): Promise<Profile | null> {
-    const foundProfile = await this.prisma.profiles.findUnique({
+    const profileData = await this.prisma.profile.findUnique({
       where: { id },
     });
 
-    if (!foundProfile) return null;
+    if (!profileData) {
+      return null;
+    }
 
     return new Profile(
-      foundProfile.id,
-      foundProfile.role,
-      foundProfile.description,
-      foundProfile.created_at,
-      foundProfile.updated_at,
+      profileData.id,
+      profileData.name,
+      profileData.description || '',
+      profileData.role as RoleName,
+      profileData.created_at,
+      profileData.updated_at,
     );
   }
 
   async findAll(): Promise<Profile[]> {
-    const foundProfiles = await this.prisma.profiles.findMany();
+    const profilesData = await this.prisma.profile.findMany();
 
-    return foundProfiles.map((profile) => {
-      return new Profile(
-        profile.id,
-        profile.role,
-        profile.description,
-        profile.created_at,
-        profile.updated_at,
-      );
-    });
+    return profilesData.map(
+      (profile) =>
+        new Profile(
+          profile.id,
+          profile.name,
+          profile.description || '',
+          profile.role as RoleName,
+          profile.created_at,
+          profile.updated_at,
+        ),
+    );
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.profiles.delete({
+    await this.prisma.profile.delete({
       where: { id },
     });
   }

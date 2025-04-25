@@ -1,4 +1,4 @@
-import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dtos/profile-request.dto';
+import { CreateProfileDtoSwagger } from '@app/profiles/interfaces/http/dto/profile-request.dto';
 
 describe('CreateProfileDtoSwagger', () => {
   it('creates an instance with valid role and description', () => {

@@ -2,11 +2,12 @@ import { UpdateProfileUseCase } from '@app/profiles/application/use-cases/update
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { UpdateProfileSchemaValidator } from '@app/profiles/application/validators/update-profile-schema.validator';
-import { UpdateProfileResponseDto } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { UpdateProfileController } from '@app/profiles/interfaces/http/controllers/update-profile.controller';
+import { UpdateProfileResponseDto } from '@app/profiles/application/dto/update-profile-request.dto';
 
 describe('UpdateProfileController', () => {
   let controller: UpdateProfileController;
@@ -101,9 +102,7 @@ describe('UpdateProfileController', () => {
       new UpdateProfileSchemaValidator(),
     );
 
-    await expect(
-      validationPipe.transform(invalidBody, { type: 'body' }),
-    ).rejects.toThrow(
+    await expect(validationPipe.transform(invalidBody)).rejects.toThrow(
       Exception.new({
         code: Code.BAD_REQUEST.code,
         overrideMessage: `Description must be a string`,
