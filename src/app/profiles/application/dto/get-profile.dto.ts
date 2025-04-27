@@ -30,12 +30,12 @@ export class GetProfileUseCaseResponseDto {
     description: 'Date when the profile was created',
     example: faker.date.past(),
   })
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty({
     type: 'string',
     description: 'Date when the profile was last updated',
     example: faker.date.recent(),
   })
-  updated_at: Date;
+  updatedAt: Date;
 }

@@ -1,8 +1,8 @@
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
 import { Inject, Injectable } from '@nestjs/common';
-import { Profile } from '@app/profiles/domain/entities/profile.entity';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
+import { ProfileModel } from '@app/profiles/domain/models/profile.model';
 
 @Injectable()
 export class GetProfileUseCase {
@@ -11,7 +11,7 @@ export class GetProfileUseCase {
     private readonly profileRepository: ProfileRepository,
   ) {}
 
-  async execute(userId: string): Promise<Profile> {
+  async execute(userId: string): Promise<ProfileModel> {
     try {
       const profile = await this.profileRepository.findById(userId);
 

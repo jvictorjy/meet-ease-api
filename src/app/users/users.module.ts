@@ -5,6 +5,7 @@ import { BcryptHasher } from '@app/@common/infrastructure/adapters/cryptography/
 import { PrismaProfileRepository } from '@app/profiles/infrastructure/persistence/prisma-profile.repository';
 import { UseCases } from '@app/users/application/use-cases';
 import { Controllers } from '@app/users/interfaces/http/controllers';
+import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-aggregate.mapper';
 
 @Module({
   imports: [CryptographyModule],
@@ -21,6 +22,10 @@ import { Controllers } from '@app/users/interfaces/http/controllers';
     {
       provide: 'HashGenerator',
       useClass: BcryptHasher,
+    },
+    {
+      provide: 'ProfileAggregateMapper',
+      useClass: ProfileAggregateMapper,
     },
     ...UseCases,
   ],

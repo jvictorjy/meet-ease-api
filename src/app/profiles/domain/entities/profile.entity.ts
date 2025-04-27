@@ -28,11 +28,11 @@ export class Profile {
     return this._role;
   }
 
-  get created_at(): Date {
+  get createdAt(): Date {
     return this._created_at;
   }
 
-  get updated_at(): Date {
+  get updatedAt(): Date {
     return this._updated_at;
   }
 

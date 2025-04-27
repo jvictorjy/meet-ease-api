@@ -12,6 +12,7 @@ import { JwtStrategy } from '@app/auth/infrastructure/jwt/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from '@app/auth/application/services/auth.service';
 import { PrismaProfileRepository } from '@app/profiles/infrastructure/persistence/prisma-profile.repository';
+import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-aggregate.mapper';
 
 const configService = new ConfigService<EnvironmentVariables, true>(
   ConfigService,
@@ -66,6 +67,10 @@ const configService = new ConfigService<EnvironmentVariables, true>(
     {
       provide: 'ConfigService',
       useClass: ConfigService,
+    },
+    {
+      provide: 'ProfileAggregateMapper',
+      useClass: ProfileAggregateMapper,
     },
   ],
 })

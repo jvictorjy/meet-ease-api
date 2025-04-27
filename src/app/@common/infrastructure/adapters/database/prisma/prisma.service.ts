@@ -14,14 +14,14 @@ const configService = new ConfigService<EnvironmentVariables, true>(
 );
 
 @Injectable()
-export class PrismaDatabaseAdapter
+export class PrismaService
   extends PrismaClient<
     Prisma.PrismaClientOptions,
     'query' | 'info' | 'warn' | 'error'
   >
   implements OnModuleInit, OnModuleDestroy
 {
-  private readonly logger = new Logger(PrismaDatabaseAdapter.name);
+  private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
     super({
