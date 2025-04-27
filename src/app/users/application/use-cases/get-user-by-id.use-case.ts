@@ -27,8 +27,8 @@ export class GetUserByIdUseCase {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        created_at: user.created_at,
-        updated_at: user.updated_at,
+        created_at: user.createdAt,
+        updated_at: user.updatedAt,
       };
     } catch (error) {
       if (error instanceof Exception) {

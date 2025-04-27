@@ -2,7 +2,7 @@ import { UserRepository } from '@app/users/domain/repositories/user.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
-import { GetUserResponseDto } from '@app/users/interfaces/http/dtos/get-user.dto';
+import { UserModel } from '@app/users/domain/models/user.model';
 
 @Injectable()
 export class GetAllUsersUseCase {
@@ -11,18 +11,9 @@ export class GetAllUsersUseCase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(): Promise<GetUserResponseDto[]> {
+  async execute(): Promise<UserModel[]> {
     try {
-      const users = await this.userRepository.findAll();
-
-      return users.map((user) => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        created_at: user.created_at,
-        updated_at: user.updated_at,
-      }));
+      return this.userRepository.findAll();
     } catch (error) {
       if (error instanceof Exception) {
         throw error;

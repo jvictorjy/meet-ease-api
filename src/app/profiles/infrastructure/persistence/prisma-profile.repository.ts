@@ -5,6 +5,8 @@ import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-aggregate.mapper';
 import { ProfileModel } from '@app/profiles/domain/models/profile.model';
 import { Inject, Injectable } from '@nestjs/common';
+import { Exception } from '@core/@shared/domain/exception/Exception';
+import { Code } from '@core/@shared/domain/error/Code';
 
 @Injectable()
 export class PrismaProfileRepository implements ProfileRepository {
@@ -16,37 +18,42 @@ export class PrismaProfileRepository implements ProfileRepository {
   ) {}
 
   async create(profile: Profile): Promise<void> {
-    await this.prisma.profile.create({
-      data: {
-        id: profile.id,
-        name: profile.name,
-        description: profile.description,
-        role: profile.role,
-        created_at: profile.createdAt,
-        updated_at: profile.updatedAt,
-      },
-    });
+    try {
+      await this.prisma.profile.create({
+        data: {
+          id: profile.id,
+          name: profile.name,
+          description: profile.description,
+          role: profile.role,
+          created_at: profile.createdAt,
+          updated_at: profile.updatedAt,
+        },
+      });
+    } catch (error) {
+      throw Exception.new({
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: error.message,
+      });
+    }
   }
 
-  async update(profile: Profile): Promise<Profile> {
-    const profileData = await this.prisma.profile.update({
-      where: { id: profile.id },
-      data: {
-        name: profile.name,
-        description: profile.description,
-        role: profile.role,
-        updated_at: new Date(),
-      },
-    });
-
-    return new Profile(
-      profileData.id,
-      profileData.name,
-      profileData.description || '',
-      profileData.role as RoleName,
-      profileData.created_at,
-      profileData.updated_at,
-    );
+  async update(profile: Profile): Promise<void> {
+    try {
+      await this.prisma.profile.update({
+        where: { id: profile.id },
+        data: {
+          name: profile.name,
+          description: profile.description,
+          role: profile.role,
+          updated_at: new Date(),
+        },
+      });
+    } catch (error) {
+      throw Exception.new({
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: error.message,
+      });
+    }
   }
 
   async findById(id: string): Promise<ProfileModel | null> {
@@ -70,8 +77,10 @@ export class PrismaProfileRepository implements ProfileRepository {
         ),
       );
     } catch (error) {
-      console.log(error);
-      throw error;
+      throw Exception.new({
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: error.message,
+      });
     }
   }
 
@@ -94,8 +103,15 @@ export class PrismaProfileRepository implements ProfileRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.profile.delete({
-      where: { id },
-    });
+    try {
+      await this.prisma.profile.delete({
+        where: { id },
+      });
+    } catch (error) {
+      throw Exception.new({
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: error.message,
+      });
+    }
   }
 }

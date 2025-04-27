@@ -11,6 +11,7 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import { UserModel } from '@app/users/domain/models/user.model';
 
 @Controller('users')
 @ApiTags('Users')
@@ -35,7 +36,7 @@ export class GetAllUsersController {
     description: 'Get all users',
     type: [GetUserResponseDto],
   })
-  async handle(): Promise<GetUserResponseDto[]> {
+  async handle(): Promise<UserModel[]> {
     return this.getAllUsersUseCase.execute();
   }
 }

@@ -6,11 +6,13 @@ import { PrismaProfileRepository } from '@app/profiles/infrastructure/persistenc
 import { UseCases } from '@app/users/application/use-cases';
 import { Controllers } from '@app/users/interfaces/http/controllers';
 import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-aggregate.mapper';
+import { UserAggregateMapper } from '@app/users/domain/mappers/user-aggregate.mapper';
 
 @Module({
   imports: [CryptographyModule],
   controllers: [...Controllers],
   providers: [
+    ...UseCases,
     {
       provide: 'UserRepository',
       useClass: PrismaUserRepository,
@@ -27,7 +29,10 @@ import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-agg
       provide: 'ProfileAggregateMapper',
       useClass: ProfileAggregateMapper,
     },
-    ...UseCases,
+    {
+      provide: 'UserAggregateMapper',
+      useClass: UserAggregateMapper,
+    },
   ],
   exports: [],
 })

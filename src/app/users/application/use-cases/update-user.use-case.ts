@@ -1,6 +1,5 @@
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from '@app/users/domain/entities/user.entity';
 import { UpdateUserRequestDto } from '@app/users/interfaces/http/dtos/update-user.dto';
 import { Code } from '@core/@shared/domain/error/Code';
 import { Exception } from '@core/@shared/domain/exception/Exception';
@@ -12,10 +11,7 @@ export class UpdateUserUseCase {
     private userRepository: UserRepository,
   ) {}
 
-  async execute(
-    userId: string,
-    payload: UpdateUserRequestDto,
-  ): Promise<Partial<User>> {
+  async execute(userId: string, payload: UpdateUserRequestDto): Promise<void> {
     try {
       const user = await this.userRepository.findById(userId);
 
@@ -26,19 +22,9 @@ export class UpdateUserUseCase {
         });
       }
 
-      const updatedUser = { ...user, ...payload };
+      const updatedUser = { id: user.id, ...payload };
 
-      const userUpdated = await this.userRepository.update(updatedUser);
-
-      return {
-        id: userUpdated.id,
-        name: userUpdated.name,
-        email: userUpdated.email,
-        phone: userUpdated.phone,
-        profile_id: userUpdated.profile_id,
-        created_at: userUpdated.created_at,
-        updated_at: userUpdated.updated_at,
-      };
+      await this.userRepository.update(updatedUser);
     } catch (error) {
       if (error instanceof Exception) {
         throw error;

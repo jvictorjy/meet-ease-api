@@ -13,6 +13,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from '@app/auth/application/services/auth.service';
 import { PrismaProfileRepository } from '@app/profiles/infrastructure/persistence/prisma-profile.repository';
 import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-aggregate.mapper';
+import { UserAggregateMapper } from '@app/users/domain/mappers/user-aggregate.mapper';
 
 const configService = new ConfigService<EnvironmentVariables, true>(
   ConfigService,
@@ -71,6 +72,10 @@ const configService = new ConfigService<EnvironmentVariables, true>(
     {
       provide: 'ProfileAggregateMapper',
       useClass: ProfileAggregateMapper,
+    },
+    {
+      provide: 'UserAggregateMapper',
+      useClass: UserAggregateMapper,
     },
   ],
 })

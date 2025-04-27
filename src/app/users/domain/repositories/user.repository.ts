@@ -1,4 +1,5 @@
 import { User } from '@app/users/domain/entities/user.entity';
+import { UserModel } from '@app/users/domain/models/user.model';
 
 export interface UserUpdatePayload {
   id: string;
@@ -8,10 +9,10 @@ export interface UserUpdatePayload {
 }
 
 export interface UserRepository {
-  create(user: User): Promise<User>;
+  create(user: User): Promise<void>;
+  update(user: UserUpdatePayload): Promise<void>;
   findById(id: string): Promise<User | null>;
-  findAll(): Promise<User[]>;
+  findAll(): Promise<UserModel[]>;
   findByEmail(email: string): Promise<User | null>;
-  update(user: UserUpdatePayload): Promise<User>;
   delete(id: string): Promise<void>;
 }

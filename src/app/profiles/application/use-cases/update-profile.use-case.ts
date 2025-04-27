@@ -16,7 +16,7 @@ export class UpdateProfileUseCase {
   async execute(
     id: string,
     updateProfileDto: UpdateProfileRequestDto,
-  ): Promise<Profile> {
+  ): Promise<void> {
     try {
       const existingProfile = await this.profileRepository.findById(id);
 
@@ -43,7 +43,7 @@ export class UpdateProfileUseCase {
         new Date(),
       );
 
-      return this.profileRepository.update(updatedProfile);
+      await this.profileRepository.update(updatedProfile);
     } catch (error) {
       if (error instanceof Exception) {
         throw error;
