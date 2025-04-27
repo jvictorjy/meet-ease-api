@@ -11,7 +11,7 @@ export interface UserUpdatePayload {
 export interface UserRepository {
   create(user: User): Promise<void>;
   update(user: UserUpdatePayload): Promise<void>;
-  findById(id: string): Promise<User | null>;
+  findById(id: string): Promise<UserModel | null>;
   findAll(): Promise<UserModel[]>;
   findByEmail(email: string): Promise<User | null>;
   delete(id: string): Promise<void>;

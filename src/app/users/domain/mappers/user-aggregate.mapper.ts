@@ -1,25 +1,30 @@
 import { User } from '@app/users/domain/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { UserModel } from '@app/users/domain/models/user.model';
+import { Profile } from '@app/profiles/domain/entities/profile.entity';
 
 @Injectable()
 export class UserAggregateMapper {
-  async mapToAggregate(userEntity: User): Promise<UserModel> {
+  async mapToAggregate(
+    userEntity: User,
+    profileEntity: Profile,
+  ): Promise<UserModel> {
     const user = this.removeUnderscorePrefix(userEntity);
+    const profile = this.removeUnderscorePrefix(profileEntity);
 
     return {
       id: user.id,
       name: user.name,
       email: user.email,
       phone: user.phone,
-      profile: user.profile,
-      createdAt: user.createdAt || new Date(),
-      updatedAt: user.updatedAt || new Date(),
+      profile,
+      createdAt: user.created_at ?? new Date(),
+      updatedAt: user.updated_at ?? new Date(),
     };
   }
 
-  async mapCollection(users: User[]): Promise<UserModel[]> {
-    return Promise.all(users.map((user) => this.mapToAggregate(user)));
+  async mapCollection(users: any[]): Promise<any[]> {
+    return users.map((user) => this.mapToAggregate(user, user.profile));
   }
 
   private removeUnderscorePrefix(entity: any): Record<string, any> {

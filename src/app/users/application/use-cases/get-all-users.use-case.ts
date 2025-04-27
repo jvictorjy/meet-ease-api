@@ -13,7 +13,9 @@ export class GetAllUsersUseCase {
 
   async execute(): Promise<UserModel[]> {
     try {
-      return this.userRepository.findAll();
+      const users = await this.userRepository.findAll();
+
+      return Promise.all(users);
     } catch (error) {
       if (error instanceof Exception) {
         throw error;
