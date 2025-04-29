@@ -2,7 +2,7 @@ import { GetProfileController } from '@app/profiles/interfaces/http/controllers/
 
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profile.use-case';
-import { GetProfileUseCaseResponseDto } from '@app/profiles/application/dto/get-profile.dto';
+import { GetProfileUseCaseResponseDto } from '@app/profiles/application/dtos/get-profile.dto';
 
 describe('GetProfileController', () => {
   let getProfileController: GetProfileController;

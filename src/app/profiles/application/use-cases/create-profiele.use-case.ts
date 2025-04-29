@@ -4,7 +4,7 @@ import { ProfileRepository } from '@app/profiles/domain/repositories/profile.rep
 import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
-import { CreateProfileDto } from '@app/profiles/application/dto/create-profile.dto';
+import { CreateProfileDto } from '@app/profiles/interfaces/http/dtos/create-profile.dto';
 
 @Injectable()
 export class CreateProfileUseCase {

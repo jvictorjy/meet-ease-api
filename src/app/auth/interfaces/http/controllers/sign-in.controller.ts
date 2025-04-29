@@ -17,7 +17,7 @@ import { SignInSchemaValidators } from '@app/auth/application/validators/sign-in
 import {
   SignInDto,
   SignInResponseDto,
-} from '@app/auth/application/dtos/sign-in.dto';
+} from '@app/auth/interfaces/http/dtos/sign-in.dto';
 
 @Controller('auth')
 @ApiTags('Auth')

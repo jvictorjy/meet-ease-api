@@ -35,7 +35,7 @@ export default {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.(t|j)s',
     '!<rootDir>/src/main.(t|J)s',
-    '!<rootDir>/src/**/*.dto.(t|J)s',
+    '!<rootDir>/src/**/*.dtos.(t|J)s',
     '!<rootDir>/src/**/*.module.(t|J)s',
     '!<rootDir>/src/**/migrations/*',
     '!<rootDir>/src/app/@@common/**/config/swagger.config.ts',

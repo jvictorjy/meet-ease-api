@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { UpdateProfileController } from '@app/profiles/interfaces/http/controllers/update-profile.controller';
-import { UpdateProfileResponseDto } from '@app/profiles/application/dto/update-profile-request.dto';
+import { UpdateProfileResponseDto } from '@app/profiles/application/dtos/update-profile-request.dto';
 
 describe('UpdateProfileController', () => {
   let controller: UpdateProfileController;

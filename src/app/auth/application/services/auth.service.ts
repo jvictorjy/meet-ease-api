@@ -5,7 +5,7 @@ import { ProfileRepository } from '@app/profiles/domain/repositories/profile.rep
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
-import { SignInResponseDto } from '@app/auth/application/dtos/sign-in.dto';
+import { SignInResponseDto } from '@app/auth/interfaces/http/dtos/sign-in.dto';
 
 @Injectable()
 export class AuthService {

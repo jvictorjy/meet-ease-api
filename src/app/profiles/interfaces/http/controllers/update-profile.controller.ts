@@ -25,7 +25,7 @@ import { UpdateProfileSchemaValidator } from '@app/profiles/application/validato
 import {
   UpdateProfileRequestDto,
   UpdateProfileResponseDto,
-} from '@app/profiles/application/dto/update-profile-request.dto';
+} from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
 
 /**
  * Controller for handling profile update requests.

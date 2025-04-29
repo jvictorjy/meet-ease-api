@@ -3,8 +3,9 @@ import { Profile } from '@app/profiles/domain/entities/profile.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
-import { UpdateProfileRequestDto } from '@app/profiles/application/dto/update-profile-request.dto';
+
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
+import { UpdateProfileRequestDto } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
 
 @Injectable()
 export class UpdateProfileUseCase {

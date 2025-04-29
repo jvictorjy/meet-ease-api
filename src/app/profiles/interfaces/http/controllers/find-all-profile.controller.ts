@@ -11,7 +11,7 @@ import {
 
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
-import { GetProfileUseCaseResponseDto } from '@app/profiles/application/dto/get-profile.dto';
+import { GetProfileUseCaseResponseDto } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 
 @Controller('profiles')
 @ApiTags('Profiles') // Swagger tag for grouping endpoints under "Profiles"

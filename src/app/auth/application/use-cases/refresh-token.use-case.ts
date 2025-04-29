@@ -5,7 +5,7 @@ import { AuthService } from '@app/auth/application/services/auth.service';
 import {
   RefreshTokenDto,
   RefreshTokenResponseDto,
-} from '@app/auth/application/dtos/refresh-token.dto';
+} from '@app/auth/interfaces/http/dtos/refresh-token.dto';
 
 @Injectable()
 export class RefreshTokenUseCase {

@@ -17,7 +17,7 @@ import { RefreshTokenSchemaValidators } from '@app/auth/application/validators/r
 import {
   RefreshTokenDto,
   RefreshTokenResponseDto,
-} from '@app/auth/application/dtos/refresh-token.dto';
+} from '@app/auth/interfaces/http/dtos/refresh-token.dto';
 
 @Controller('auth')
 @ApiTags('Auth')

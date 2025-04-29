@@ -2,7 +2,6 @@ import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { CreateProfileUseCase } from '@app/profiles/application/use-cases/create-profiele.use-case';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
@@ -13,8 +12,9 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { CreateProfileSchemaValidator } from '@app/profiles/application/validators/create-profile-schema.validator';
-import { CreateProfileDto } from '@app/profiles/application/dto/create-profile.dto';
+
 import { Public } from '@app/auth/infrastructure/jwt/public';
+import { CreateProfileDto } from '@app/profiles/interfaces/http/dtos/create-profile.dto';
 
 /**
  * Controller for handling profile creation requests.

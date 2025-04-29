@@ -12,8 +12,9 @@ import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profile.use-case';
-import { GetProfileUseCaseResponseDto } from '@app/profiles/application/dto/get-profile.dto';
+
 import { ProfileModel } from '@app/profiles/domain/models/profile.model';
+import { GetProfileUseCaseResponseDto } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 
 @Controller('profiles')
 @ApiTags('Profiles') // Swagger tag for grouping endpoints under "Profiles"
