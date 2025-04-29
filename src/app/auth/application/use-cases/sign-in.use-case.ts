@@ -48,14 +48,7 @@ export class SignInUseCase {
         });
       }
 
-      const accessToken = await this.authService.generateToken(
-        user.id,
-        user.profile_id,
-      );
-
-      return {
-        accessToken,
-      };
+      return await this.authService.generateTokens(user.id);
     } catch (error) {
       if (error instanceof Exception) {
         throw error;

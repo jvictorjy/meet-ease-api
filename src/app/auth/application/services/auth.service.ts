@@ -5,6 +5,7 @@ import { ProfileRepository } from '@app/profiles/domain/repositories/profile.rep
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
+import { SignInResponseDto } from '@app/auth/application/dtos/sign-in.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async generateToken(userId: string, profileId: string): Promise<string> {
+  async generateTokens(userId: string): Promise<SignInResponseDto> {
     try {
       const user = await this.userRepository.findById(userId);
 
@@ -33,7 +34,7 @@ export class AuthService {
         });
       }
 
-      const profile = await this.profileRepository.findById(profileId);
+      const profile = await this.profileRepository.findById(user.profile.id);
 
       if (!profile) {
         throw Exception.new({
@@ -56,10 +57,29 @@ export class AuthService {
         },
       };
 
-      return this.jwtService.sign(payload, {
+      const accessToken = this.jwtService.sign(payload, {
         secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: this.configService.get<string>('JWT_EXPIRES_IN', '24h'),
       });
+
+      const refreshToken = this.jwtService.sign(
+        { sub: userId },
+        {
+          secret: this.configService.get<string>(
+            'JWT_REFRESH_SECRET',
+            'refresh-secret',
+          ),
+          expiresIn: this.configService.get<string>(
+            'JWT_REFRESH_EXPIRES_IN',
+            '7d',
+          ),
+        },
+      );
+
+      return {
+        accessToken,
+        refreshToken,
+      };
     } catch (error) {
       if (error instanceof Exception) {
         throw error;
@@ -72,9 +92,12 @@ export class AuthService {
     }
   }
 
-  verifyToken(token: string): any {
+  verifyRefreshToken(token: string): any {
     return this.jwtService.verify(token, {
-      secret: this.configService.get<string>('JWT_SECRET'),
+      secret: this.configService.get<string>(
+        'JWT_REFRESH_SECRET',
+        'refresh-secret',
+      ),
     });
   }
 }

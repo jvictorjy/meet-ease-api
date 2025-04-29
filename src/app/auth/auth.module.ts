@@ -29,7 +29,10 @@ const configService = new ConfigService<EnvironmentVariables, true>(
         const publicKey = configService.get('JWT_PUBLIC_KEY');
 
         return {
-          signOptions: { expiresIn: '24h', algorithm: 'RS256' },
+          signOptions: {
+            expiresIn: configService.get('JWT_EXPIRES_IN'),
+            algorithm: 'RS256',
+          },
           privateKey: Buffer.from(privateKey, 'base64'),
           publicKey: Buffer.from(publicKey, 'base64'),
         };

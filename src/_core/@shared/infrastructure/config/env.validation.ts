@@ -41,6 +41,18 @@ export class EnvironmentVariables {
 
   @IsNotEmpty()
   @IsString()
+  JWT_REFRESH_SECRET: string;
+
+  @IsNotEmpty()
+  @IsString()
+  JWT_EXPIRES_IN: string;
+
+  @IsNotEmpty()
+  @IsString()
+  JWT_REFRESH_EXPIRES_IN: string;
+
+  @IsNotEmpty()
+  @IsString()
   DB_DIALECT: string;
 
   @IsNotEmpty()
