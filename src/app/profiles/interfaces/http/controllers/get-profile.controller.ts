@@ -15,6 +15,8 @@ import { GetProfileUseCase } from '@app/profiles/application/use-cases/get-profi
 
 import { ProfileModel } from '@app/profiles/domain/models/profile.model';
 import { GetProfileUseCaseResponseDto } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
+import { Roles } from '@app/auth/application/docorators/roles.decorator';
+import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 
 @Controller('profiles')
 @ApiTags('Profiles') // Swagger tag for grouping endpoints under "Profiles"
@@ -39,6 +41,7 @@ export class GetProfileController {
     description: 'Get profile by ID', // Swagger response for 200 status
     type: GetProfileUseCaseResponseDto, // Swagger response type
   })
+  @Roles(RoleName.ADMIN)
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
   ): Promise<ProfileModel> {

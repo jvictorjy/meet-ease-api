@@ -60,3 +60,30 @@ model Area {
 
   @@map("areas")
 }
+
+model Room {
+  id          String       @id @default(uuid())
+  name        String       @db.VarChar(255)
+  description String?      @db.Text
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  deleted_at  DateTime?
+
+  layouts     RoomLayout[]
+
+  @@map("rooms")
+}
+
+model RoomLayout {
+  id          String    @id @default(uuid())
+  description String?   @db.Text
+  image_url   String    @db.VarChar(255)
+  room_id     String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  room        Room      @relation(fields: [room_id], references: [id])
+
+  @@map("room_layouts")
+}

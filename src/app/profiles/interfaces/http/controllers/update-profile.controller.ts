@@ -26,6 +26,8 @@ import {
   UpdateProfileRequestDto,
   UpdateProfileResponseDto,
 } from '@app/profiles/interfaces/http/dtos/update-profile-request.dto';
+import { Roles } from '@app/auth/application/docorators/roles.decorator';
+import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 
 /**
  * Controller for handling profile update requests.
@@ -78,6 +80,7 @@ export class UpdateProfileController {
     type: UpdateProfileResponseDto, // Swagger response type
   })
   @ApiBody({ type: UpdateProfileRequestDto }) // Swagger body schema for the request
+  @Roles(RoleName.ADMIN)
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
     @Body(new ZodValidationPipe(new UpdateProfileSchemaValidator()))

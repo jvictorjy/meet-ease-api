@@ -12,6 +12,8 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
 import { GetProfileUseCaseResponseDto } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
+import { Roles } from '@app/auth/application/docorators/roles.decorator';
+import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 
 @Controller('profiles')
 @ApiTags('Profiles') // Swagger tag for grouping endpoints under "Profiles"
@@ -36,6 +38,7 @@ export class FindAllProfileController {
     description: 'List profiles', // Swagger response for 200 status
     type: [GetProfileUseCaseResponseDto], // Swagger response type
   })
+  @Roles(RoleName.ADMIN)
   async handle() {
     return this.findAllProfileUseCase.execute();
   }
