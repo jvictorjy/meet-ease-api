@@ -14,11 +14,13 @@ model User {
   password   String    @db.VarChar(255)
   phone      String    @db.VarChar(50)
   profile_id  String    @db.VarChar(50)
+  area_id    String?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  
-  profile    Profile @relation(fields: [profile_id], references: [id])
+
+  profile    Profile    @relation(fields: [profile_id], references: [id])
+  area       Area?    @relation(fields: [area_id], references: [id])
 
   @@map("users")
 }
@@ -41,4 +43,20 @@ enum RoleName {
   CORE
   LEADER
   SCHEDULER
+}
+
+model Area {
+  id          String    @id @default(uuid())
+  name        String    @db.VarChar(255)
+  description String?   @db.Text
+  parent_id   String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  parent      Area?     @relation("AreaHierarchy", fields: [parent_id], references: [id])
+  children    Area[]    @relation("AreaHierarchy")
+  users       User[]
+
+  @@map("areas")
 }

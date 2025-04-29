@@ -10,6 +10,7 @@ import { MainController } from './main.controller';
 import { UsersModule } from '@app/users/users.module';
 import { ProfilesModule } from '@app/profiles/profiles.module';
 import { AuthModule } from '@app/auth/auth.module';
+import { AreasModule } from '@app/areas/areas.module';
 
 const providers: Provider[] = [
   {
@@ -28,6 +29,7 @@ const providers: Provider[] = [
     UsersModule,
     ProfilesModule,
     AuthModule,
+    AreasModule,
   ],
   controllers: [MainController],
   providers,
