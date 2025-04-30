@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@core/@shared/infrastructure/config/env.validation';
 import { applySwagger } from '@app/@common/application/config';
 import { Logger } from '@nestjs/common';
+import { json, urlencoded } from 'express';
 
 const logger = new Logger('Main');
 
@@ -12,6 +13,10 @@ async function bootstrap() {
 
   const configService =
     app.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
+
+  // Configure Express middleware for handling file uploads
+  app.use(json({ limit: '10mb' }));
+  app.use(urlencoded({ extended: true, limit: '10mb' }));
 
   app.enableShutdownHooks();
 

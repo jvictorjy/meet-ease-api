@@ -47,6 +47,21 @@ export class RoomLayoutResponseDto {
   deletedAt: Date | null;
 }
 
+export class CreateRoomLayoutDto {
+  @ApiPropertyOptional({
+    description: 'The description of the room layout',
+    example: faker.lorem.lines(),
+    nullable: true,
+  })
+  description?: string;
+
+  @ApiProperty({
+    description: 'The URL of the room layout image',
+    example: faker.image.url(),
+  })
+  imageUrl: string;
+}
+
 export class CreateRoomDto {
   @ApiProperty({
     type: String,
@@ -61,6 +76,13 @@ export class CreateRoomDto {
     nullable: true,
   })
   description?: string;
+
+  @ApiPropertyOptional({
+    description: 'The layout of the room',
+    type: CreateRoomLayoutDto,
+    nullable: true,
+  })
+  layout?: CreateRoomLayoutDto;
 }
 
 export class UpdateRoomDto {
