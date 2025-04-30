@@ -5,6 +5,7 @@ import { RoomRepository } from '@app/rooms/domain/repositories/room.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
+import { FileUploadService } from '@app/@common/infrastructure/services/file-upload.service';
 
 export interface CreateRoomLayoutDto {
   description?: string;
@@ -22,10 +23,24 @@ export class CreateRoomUseCase {
   constructor(
     @Inject('RoomRepository')
     private readonly roomRepository: RoomRepository,
+
+    @Inject('FileUploadService')
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
-  async execute(payload: CreateRoomDto): Promise<void> {
+  async execute(
+    payload: CreateRoomDto,
+    file?: Express.Multer.File,
+  ): Promise<void> {
     try {
+      let imageUrl = '';
+      if (file) {
+        imageUrl = await this.fileUploadService.uploadFile(
+          file,
+          'room-layouts',
+        );
+      }
+
       const roomId = uuid();
       const now = new Date();
 
@@ -44,7 +59,7 @@ export class CreateRoomUseCase {
         const layout = new RoomLayout(
           uuid(),
           payload.layout.description ?? '',
-          payload.layout.imageUrl,
+          file ? imageUrl : '',
           roomId,
           now,
           now,

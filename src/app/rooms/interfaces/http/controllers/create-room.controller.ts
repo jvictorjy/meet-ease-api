@@ -9,7 +9,6 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
-  Inject,
 } from '@nestjs/common';
 import { CreateRoomUseCase } from '@app/rooms/application/use-cases/create-room.use-case';
 import {
@@ -27,8 +26,8 @@ import { CreateRoomDto } from '@app/rooms/interfaces/http/dtos/room.dto';
 import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { StorageService } from '@app/@common/infrastructure/adapters/storage/storage.interface';
-import { v4 as uuid } from 'uuid';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { CreateRoomSchemaValidator } from '@app/rooms/application/validators/create-room-schema.validator';
 
 @Controller('rooms')
 @ApiTags('Rooms')
@@ -39,11 +38,7 @@ import { v4 as uuid } from 'uuid';
   type: ErrorSchema,
 })
 export class CreateRoomController {
-  constructor(
-    private readonly createRoomUseCase: CreateRoomUseCase,
-    @Inject('StorageService')
-    private readonly storageService: StorageService,
-  ) {}
+  constructor(private readonly createRoomUseCase: CreateRoomUseCase) {}
 
   @Post()
   @Roles(RoleName.ADMIN)
@@ -82,8 +77,8 @@ export class CreateRoomController {
   })
   @UseInterceptors(FileInterceptor('layoutImage'))
   async handle(
-    @Body()
-    body: { name: string; description?: string; layoutDescription?: string },
+    @Body(new ZodValidationPipe(new CreateRoomSchemaValidator()))
+    body: CreateRoomDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -95,27 +90,11 @@ export class CreateRoomController {
     )
     file?: Express.Multer.File,
   ) {
-    const dto: CreateRoomDto = {
+    const data: CreateRoomDto = {
       name: body.name,
       description: body.description,
     };
 
-    if (file) {
-      const fileExtension = file.originalname.split('.').pop();
-      const fileName = `${uuid()}.${fileExtension}`;
-
-      const imageUrl = await this.storageService.uploadFile(
-        file.buffer,
-        fileName,
-        file.mimetype,
-      );
-
-      dto.layout = {
-        description: body.layoutDescription,
-        imageUrl,
-      };
-    }
-
-    return this.createRoomUseCase.execute(dto);
+    return this.createRoomUseCase.execute(data, file);
   }
 }
