@@ -20,7 +20,6 @@ class MockAreaRepository implements AreaRepository {
     newArea.parent_id = area.parent_id;
     newArea.createdAt = new Date();
     newArea.updatedAt = new Date();
-    newArea.deletedAt = null;
 
     this.areas.push(newArea);
     return newArea;
