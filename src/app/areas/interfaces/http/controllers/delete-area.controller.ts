@@ -17,7 +17,8 @@ import {
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { DeleteAreaUseCase } from '@app/areas/application/use-cases/delete-area.use-case';
-import { Public } from '@app/auth/infrastructure/jwt/public';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 
 @Controller('areas')
 @ApiTags('Areas') // Swagger tag for grouping endpoints under "Areas"
@@ -47,7 +48,9 @@ export class DeleteAreaController {
     type: String,
     required: true,
   })
-  async handle(@Param('id') id: string): Promise<void> {
+  async handle(
+    @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
+  ): Promise<void> {
     await this.deleteAreaUseCase.execute(id);
   }
 }

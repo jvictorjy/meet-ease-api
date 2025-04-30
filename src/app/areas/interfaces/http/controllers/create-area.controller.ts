@@ -4,6 +4,7 @@ import { CreateAreaSchemaValidator } from '@app/areas/application/validators/cre
 import { CreateAreaRequestDto } from '@app/areas/interfaces/http/dtos/create-area.dto';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
@@ -13,7 +14,6 @@ import {
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { CreateAreaUseCase } from '@app/areas/application/use-cases/create-area.use-case';
-import { Public } from '@app/auth/infrastructure/jwt/public';
 
 @Controller('areas')
 @ApiTags('Areas') // Swagger tag for grouping endpoints under "Areas"
@@ -27,7 +27,7 @@ export class CreateAreaController {
   constructor(private readonly createAreaUseCase: CreateAreaUseCase) {}
 
   @Post()
-  @Public()
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED) // Sets the HTTP status code to 201
   @ApiOperation({
     summary: 'Create area', // Swagger summary for the endpoint

@@ -11,6 +11,8 @@ import {
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { GetAreaByIdUseCase } from '@app/areas/application/use-cases/get-area-by-id.use-case';
+import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
+import { UUIDSchemaValidation } from '@app/@common/application/validations';
 
 @Controller('areas')
 @ApiTags('Areas') // Swagger tag for grouping endpoints under "Areas"
@@ -40,7 +42,9 @@ export class GetAreaByIdController {
     type: String,
     required: true,
   })
-  async handle(@Param('id') id: string) {
+  async handle(
+    @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
+  ) {
     return this.getAreaByIdUseCase.execute(id);
   }
 }
