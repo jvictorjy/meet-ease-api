@@ -3,6 +3,7 @@ import { Code } from '@core/@shared/domain/error/Code';
 import { FindAllProfileUseCase } from '@app/profiles/application/use-cases/find-all-profile.use-case';
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
 import { ProfileModel } from '@app/profiles/domain/models/profile.model';
+import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 
 describe('FindAllProfileUseCase', () => {
   let findAllProfileUseCase: FindAllProfileUseCase;
@@ -31,7 +32,7 @@ describe('FindAllProfileUseCase', () => {
         id: 'profile-1',
         name: 'Profile 1',
         description: 'Description 1',
-        role: 'user',
+        role: RoleName.ADMIN,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -39,7 +40,7 @@ describe('FindAllProfileUseCase', () => {
         id: 'profile-2',
         name: 'Profile 2',
         description: 'Description 2',
-        role: 'admin',
+        role: RoleName.ADMIN,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
