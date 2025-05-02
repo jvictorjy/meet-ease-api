@@ -5,7 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   UseInterceptors,
-  UploadedFile,
+  UploadedFiles,
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
@@ -13,6 +13,7 @@ import {
 import { CreateRoomUseCase } from '@app/rooms/application/use-cases/create-room.use-case';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiNotFoundResponse,
@@ -25,7 +26,7 @@ import { ErrorSchema } from '@app/@common/application/documentations/openapi/swa
 import { CreateRoomDto } from '@app/rooms/interfaces/http/dtos/room.dto';
 import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { CreateRoomSchemaValidator } from '@app/rooms/application/validators/create-room-schema.validator';
 
@@ -42,10 +43,11 @@ export class CreateRoomController {
 
   @Post()
   @Roles(RoleName.ADMIN)
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Create room',
-    description: 'Create a new room',
+    description: 'Create a new room with multiple layouts',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -53,33 +55,15 @@ export class CreateRoomController {
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-        },
-        description: {
-          type: 'string',
-          nullable: true,
-        },
-        layoutDescription: {
-          type: 'string',
-          nullable: true,
-        },
-        layoutImage: {
-          type: 'string',
-          format: 'binary',
-          nullable: true,
-        },
-      },
-    },
+    type: CreateRoomDto,
+    description:
+      'Create a room with multiple layouts. Each layout can have a description and an image.',
   })
-  @UseInterceptors(FileInterceptor('layoutImage'))
+  @UseInterceptors(FilesInterceptor('layoutImages'))
   async handle(
     @Body(new ZodValidationPipe(new CreateRoomSchemaValidator()))
     body: CreateRoomDto,
-    @UploadedFile(
+    @UploadedFiles(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
@@ -88,13 +72,8 @@ export class CreateRoomController {
         fileIsRequired: false,
       }),
     )
-    file?: Express.Multer.File,
+    files?: Express.Multer.File[],
   ) {
-    const data: CreateRoomDto = {
-      name: body.name,
-      description: body.description,
-    };
-
-    return this.createRoomUseCase.execute(data, file);
+    return this.createRoomUseCase.execute(body, files);
   }
 }

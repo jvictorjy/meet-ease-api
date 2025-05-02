@@ -6,7 +6,7 @@ import {
 import { RoomLayout } from '@app/rooms/domain/entities/room-layout.entity';
 
 export interface RoomRepository {
-  create(room: Room): Promise<void>;
+  create(room: Room, layouts?: RoomLayout[]): Promise<void>;
   update(room: Room): Promise<void>;
   findById(id: string): Promise<RoomModel | null>;
   findAll(): Promise<RoomModel[]>;

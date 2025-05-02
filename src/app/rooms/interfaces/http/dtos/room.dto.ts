@@ -56,10 +56,12 @@ export class CreateRoomLayoutDto {
   description?: string;
 
   @ApiProperty({
-    description: 'The URL of the room layout image',
-    example: faker.image.url(),
+    type: 'string',
+    format: 'binary',
+    description: 'The file of the room layout image',
+    example: faker.image.avatar(),
   })
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export class CreateRoomDto {
@@ -82,7 +84,7 @@ export class CreateRoomDto {
     type: CreateRoomLayoutDto,
     nullable: true,
   })
-  layout?: CreateRoomLayoutDto;
+  layouts?: CreateRoomLayoutDto[];
 }
 
 export class UpdateRoomDto {

@@ -15,7 +15,7 @@ export interface CreateRoomLayoutDto {
 export interface CreateRoomDto {
   name: string;
   description?: string;
-  layout?: CreateRoomLayoutDto;
+  layouts?: CreateRoomLayoutDto[];
 }
 
 @Injectable()
@@ -30,17 +30,9 @@ export class CreateRoomUseCase {
 
   async execute(
     payload: CreateRoomDto,
-    file?: Express.Multer.File,
+    files?: Express.Multer.File[],
   ): Promise<void> {
     try {
-      let imageUrl = '';
-      if (file) {
-        imageUrl = await this.fileUploadService.uploadFile(
-          file,
-          'room-layouts',
-        );
-      }
-
       const roomId = uuid();
       const now = new Date();
 
@@ -53,20 +45,38 @@ export class CreateRoomUseCase {
         null,
       );
 
-      await this.roomRepository.create(room);
+      if (payload.layouts) {
+        const layouts = payload.layouts;
+        const dataLayouts: RoomLayout[] = [];
 
-      if (payload.layout) {
-        const layout = new RoomLayout(
-          uuid(),
-          payload.layout.description ?? '',
-          file ? imageUrl : '',
-          roomId,
-          now,
-          now,
-          null,
-        );
+        for (let i = 0; i < layouts.length; i++) {
+          const layout = layouts[i];
+          let imageUrl = '';
 
-        await this.roomRepository.addLayout(layout);
+          // Upload the file if it exists
+          if (files && files[i]) {
+            imageUrl = await this.fileUploadService.uploadFile(
+              files[i],
+              'room-layouts',
+            );
+          }
+
+          const newLayout = new RoomLayout(
+            uuid(),
+            layout.description ?? '',
+            imageUrl,
+            roomId,
+            now,
+            now,
+            null,
+          );
+
+          dataLayouts.push(newLayout);
+        }
+
+        await this.roomRepository.create(room, dataLayouts);
+      } else {
+        await this.roomRepository.create(room);
       }
     } catch (error) {
       if (error instanceof Exception) {

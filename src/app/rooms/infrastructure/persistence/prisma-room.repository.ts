@@ -20,7 +20,7 @@ export class PrismaRoomRepository implements RoomRepository {
     private readonly mapper: RoomAggregateMapper,
   ) {}
 
-  async create(room: Room): Promise<void> {
+  async create(room: Room, layouts?: RoomLayout[]): Promise<void> {
     try {
       await this.prisma.room.create({
         data: {
@@ -32,6 +32,14 @@ export class PrismaRoomRepository implements RoomRepository {
           deleted_at: room.deletedAt,
         },
       });
+
+      if (layouts && layouts.length > 0) {
+        const resultLayout = layouts.map(async (layout) => {
+          return await this.addLayout(layout);
+        });
+
+        await Promise.all(resultLayout);
+      }
     } catch (error) {
       throw Exception.new({
         code: Code.INTERNAL_SERVER_ERROR.code,
