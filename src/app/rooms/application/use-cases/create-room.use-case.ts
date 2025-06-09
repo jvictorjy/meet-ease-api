@@ -9,7 +9,7 @@ import { FileUploadService } from '@app/@common/infrastructure/services/file-upl
 
 export interface CreateRoomLayoutDto {
   description?: string;
-  imageUrl: string;
+  file?: Express.Multer.File;
 }
 
 export interface CreateRoomDto {
@@ -45,20 +45,23 @@ export class CreateRoomUseCase {
         null,
       );
 
-      if (payload.layouts) {
+      if (
+        payload.layouts &&
+        payload.layouts.length > 0 &&
+        files &&
+        files.length > 0
+      ) {
         const layouts = payload.layouts;
         const dataLayouts: RoomLayout[] = [];
 
+        // Process each layout with its corresponding file
         for (let i = 0; i < layouts.length; i++) {
           const layout = layouts[i];
           let imageUrl = '';
 
-          // Upload the file if it exists
-          if (files && files[i]) {
-            imageUrl = await this.fileUploadService.uploadFile(
-              files[i],
-              'room-layouts',
-            );
+          // Upload the file if it exists for this layout
+          if (i < files.length) {
+            imageUrl = await this.fileUploadService.uploadFile(files[i]);
           }
 
           const newLayout = new RoomLayout(

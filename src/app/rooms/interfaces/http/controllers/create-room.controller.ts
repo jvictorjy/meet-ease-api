@@ -59,7 +59,7 @@ export class CreateRoomController {
     description:
       'Create a room with multiple layouts. Each layout can have a description and an image.',
   })
-  @UseInterceptors(FilesInterceptor('layoutImages'))
+  @UseInterceptors(FilesInterceptor('files'))
   async handle(
     @Body(new ZodValidationPipe(new CreateRoomSchemaValidator()))
     body: CreateRoomDto,

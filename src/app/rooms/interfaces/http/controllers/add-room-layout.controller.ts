@@ -28,9 +28,7 @@ import { AddRoomLayoutDto } from '@app/rooms/interfaces/http/dtos/room.dto';
 import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Inject } from '@nestjs/common';
-import { StorageService } from '@app/@common/infrastructure/adapters/storage/storage.interface';
-import { v4 as uuid } from 'uuid';
+import { FileUploadService } from '@app/@common/infrastructure/services/file-upload.service';
 
 @Controller('rooms/:roomId/layouts')
 @ApiTags('Room Layouts')
@@ -43,8 +41,7 @@ import { v4 as uuid } from 'uuid';
 export class AddRoomLayoutController {
   constructor(
     private readonly addRoomLayoutUseCase: AddRoomLayoutUseCase,
-    @Inject('StorageService')
-    private readonly storageService: StorageService,
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
   @Post()
@@ -72,14 +69,14 @@ export class AddRoomLayoutController {
           type: 'string',
           nullable: true,
         },
-        image: {
+        file: {
           type: 'string',
           format: 'binary',
         },
       },
     },
   })
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('file'))
   async handle(
     @Param('roomId') roomId: string,
     @Body() body: { description?: string },
@@ -93,18 +90,8 @@ export class AddRoomLayoutController {
     )
     file: Express.Multer.File,
   ) {
-    // Generate a unique filename
-    const fileExtension = file.originalname.split('.').pop();
-    const fileName = `${uuid()}.${fileExtension}`;
+    const imageUrl = await this.fileUploadService.uploadFile(file);
 
-    // Upload the file to S3
-    const imageUrl = await this.storageService.uploadFile(
-      file.buffer,
-      fileName,
-      file.mimetype,
-    );
-
-    // Create the DTO
     const dto: AddRoomLayoutDto = {
       roomId,
       description: body.description,
