@@ -14,7 +14,13 @@ async function bootstrap() {
   const configService =
     app.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
 
-  // Configure Express middleware for handling file uploads
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
+
   app.use(json({ limit: '10mb' }));
   app.use(urlencoded({ extended: true, limit: '10mb' }));
 
