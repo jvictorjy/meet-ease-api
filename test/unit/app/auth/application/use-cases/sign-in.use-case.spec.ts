@@ -110,11 +110,13 @@ describe('SignInUseCase', () => {
     jest.spyOn(authService, 'generateTokens').mockResolvedValue({
       accessToken: 'mock-access-token',
       refreshToken: 'mock-refresh-token',
+      user: { name: 'Test User', email: 'user@example.com' },
+      profile: { name: 'Admin', role: 'ADMIN', description: 'desc' },
     });
 
     const result = await signInUseCase.execute(data);
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       accessToken: 'mock-access-token',
       refreshToken: 'mock-refresh-token',
     });

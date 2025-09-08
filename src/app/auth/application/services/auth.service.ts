@@ -79,6 +79,15 @@ export class AuthService {
       return {
         accessToken,
         refreshToken,
+        user: {
+          name: user.name,
+          email: user.email,
+        },
+        profile: {
+          name: profile.name,
+          role: profile.role,
+          description: profile.description,
+        },
       };
     } catch (error) {
       if (error instanceof Exception) {

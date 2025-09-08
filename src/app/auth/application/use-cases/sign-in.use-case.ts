@@ -27,7 +27,7 @@ export class SignInUseCase {
 
   async execute({ email, password }: SignInDto): Promise<SignInResponseDto> {
     try {
-      const user = await this.userRepository.findByEmail(email);
+      const user = await this.userRepository.findUserByEmail(email);
 
       if (!user) {
         throw Exception.new({

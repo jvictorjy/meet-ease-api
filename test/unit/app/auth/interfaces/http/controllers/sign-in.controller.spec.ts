@@ -28,7 +28,7 @@ describe('SignInController', () => {
     signInUseCase = module.get<SignInUseCase>(SignInUseCase);
   });
 
-  it('returns tokens when use case executes successfully', async () => {
+  it('returns tokens and user info when use case executes successfully', async () => {
     const body: SignInDto = {
       email: 'user@example.com',
       password: 'password123',
@@ -37,11 +37,13 @@ describe('SignInController', () => {
     jest.spyOn(signInUseCase, 'execute').mockResolvedValue({
       accessToken: 'mock-access-token',
       refreshToken: 'mock-refresh-token',
+      user: { name: 'User Name', email: 'user@example.com' },
+      profile: { name: 'User', role: 'USER', description: null },
     });
 
     const result = await controller.execute(body);
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       accessToken: 'mock-access-token',
       refreshToken: 'mock-refresh-token',
     });

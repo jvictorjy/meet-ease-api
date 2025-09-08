@@ -42,22 +42,38 @@ describe('SignInResponseDto', () => {
     const dto = new SignInResponseDto();
     dto.accessToken = 'valid-access-token';
     dto.refreshToken = 'valid-refresh-token';
+    dto.user = { name: 'John Doe', email: 'john@example.com' };
+    dto.profile = { name: 'Admin', role: 'ADMIN', description: 'desc' };
 
     expect(dto).toBeInstanceOf(SignInResponseDto);
     expect(dto.accessToken).toBe('valid-access-token');
     expect(dto.refreshToken).toBe('valid-refresh-token');
+    expect(dto.user).toEqual({ name: 'John Doe', email: 'john@example.com' });
+    expect(dto.profile).toEqual({
+      name: 'Admin',
+      role: 'ADMIN',
+      description: 'desc',
+    });
   });
 
   it('should create a SignInResponseDto from plain object', () => {
     const plainObject = {
       accessToken: 'valid-access-token',
       refreshToken: 'valid-refresh-token',
+      user: { name: 'Jane Doe', email: 'jane@example.com' },
+      profile: { name: 'User', role: 'USER', description: null },
     };
     const dto = plainToInstance(SignInResponseDto, plainObject);
 
     expect(dto).toBeInstanceOf(SignInResponseDto);
     expect(dto.accessToken).toBe('valid-access-token');
     expect(dto.refreshToken).toBe('valid-refresh-token');
+    expect(dto.user).toEqual({ name: 'Jane Doe', email: 'jane@example.com' });
+    expect(dto.profile).toEqual({
+      name: 'User',
+      role: 'USER',
+      description: null,
+    });
   });
 
   it('should have the correct properties with ApiProperty decorators', () => {
@@ -65,5 +81,7 @@ describe('SignInResponseDto', () => {
 
     expect(dto).toHaveProperty('accessToken');
     expect(dto).toHaveProperty('refreshToken');
+    expect(dto).toHaveProperty('user');
+    expect(dto).toHaveProperty('profile');
   });
 });
