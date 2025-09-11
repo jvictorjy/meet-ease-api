@@ -43,6 +43,7 @@ export class SignInController {
     @Body(new ZodValidationPipe(new SignInSchemaValidators()))
     data: SignInDto,
   ): Promise<SignInResponseDto> {
+    console.log(data);
     return this.signInUseCase.execute(data);
   }
 }

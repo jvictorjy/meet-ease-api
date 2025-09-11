@@ -43,7 +43,6 @@ export class AuthService {
         });
       }
 
-      // Create payload with user and profile data
       const payload = {
         sub: userId,
         user: {

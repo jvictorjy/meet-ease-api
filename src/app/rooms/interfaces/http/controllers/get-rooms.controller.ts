@@ -11,6 +11,7 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
+import { RoomResponseDto } from '@app/rooms/interfaces/http/dtos/room.dto';
 
 @Controller('rooms')
 @ApiTags('Rooms')
@@ -24,7 +25,7 @@ export class GetRoomsController {
   constructor(private readonly findAllRoomsUseCase: FindAllRoomsUseCase) {}
 
   @Get()
-  @Roles(RoleName.ADMIN)
+  @Roles(RoleName.ADMIN, RoleName.CORE, RoleName.LEADER, RoleName.SCHEDULER)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'List rooms',
@@ -33,6 +34,7 @@ export class GetRoomsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Rooms retrieved successfully',
+    type: [RoomResponseDto],
   })
   async handle() {
     return this.findAllRoomsUseCase.execute();

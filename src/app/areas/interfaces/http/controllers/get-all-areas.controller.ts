@@ -10,6 +10,7 @@ import {
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { GetAllAreasUseCase } from '@app/areas/application/use-cases/get-all-areas.use-case';
+import { GetAreaDto } from '@app/areas/interfaces/http/dtos/get-area.dto';
 
 @Controller('areas')
 @ApiTags('Areas') // Swagger tag for grouping endpoints under "Areas"
@@ -31,7 +32,8 @@ export class GetAllAreasController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Areas found', // Swagger response for 200 status
+    description: 'Areas found',
+    type: [GetAreaDto],
   })
   async handle() {
     return this.getAllAreasUseCase.execute();

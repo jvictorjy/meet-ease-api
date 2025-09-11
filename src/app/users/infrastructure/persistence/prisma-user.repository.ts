@@ -89,6 +89,7 @@ export class PrismaUserRepository implements UserRepository {
       const foundUsers = await this.prisma.user.findMany({
         include: {
           profile: true,
+          area: true,
         },
       });
 

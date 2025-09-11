@@ -18,9 +18,8 @@ export class RefreshTokenUseCase {
     refreshToken,
   }: RefreshTokenDto): Promise<RefreshTokenResponseDto> {
     try {
-      // Verify the refresh token
       const payload = this.authService.verifyRefreshToken(refreshToken);
-
+      console.log(payload);
       if (!payload || !payload.sub) {
         throw Exception.new({
           code: Code.UNAUTHORIZED.code,
@@ -28,7 +27,6 @@ export class RefreshTokenUseCase {
         });
       }
 
-      // Generate new tokens
       return await this.authService.generateTokens(payload.sub);
     } catch (error) {
       if (error instanceof Exception) {

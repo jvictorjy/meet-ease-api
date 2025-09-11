@@ -14,6 +14,7 @@ import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
+import { RoomWithDetailsResponseDto } from '@app/rooms/interfaces/http/dtos/room.dto';
 
 @Controller('rooms')
 @ApiTags('Rooms')
@@ -27,7 +28,7 @@ export class GetRoomController {
   constructor(private readonly getRoomUseCase: GetRoomUseCase) {}
 
   @Get(':id')
-  @Roles(RoleName.ADMIN)
+  @Roles(RoleName.ADMIN, RoleName.CORE, RoleName.LEADER, RoleName.SCHEDULER)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get room',
@@ -42,6 +43,7 @@ export class GetRoomController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Room retrieved successfully',
+    type: RoomWithDetailsResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

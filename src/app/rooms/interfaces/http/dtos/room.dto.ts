@@ -141,7 +141,9 @@ export class RoomResponseDto {
     nullable: true,
   })
   deletedAt: Date | null;
+}
 
+export class RoomWithDetailsResponseDto extends RoomResponseDto {
   @ApiPropertyOptional({
     description: 'The layouts of the room',
     type: [RoomLayoutResponseDto],

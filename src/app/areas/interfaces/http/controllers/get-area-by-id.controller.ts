@@ -13,6 +13,7 @@ import { ErrorSchema } from '@app/@common/application/documentations/openapi/swa
 import { GetAreaByIdUseCase } from '@app/areas/application/use-cases/get-area-by-id.use-case';
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
+import { GetAreaDto } from '@app/areas/interfaces/http/dtos/get-area.dto';
 
 @Controller('areas')
 @ApiTags('Areas') // Swagger tag for grouping endpoints under "Areas"
@@ -35,6 +36,7 @@ export class GetAreaByIdController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Area found', // Swagger response for 200 status
+    type: GetAreaDto,
   })
   @ApiParam({
     name: 'id',
