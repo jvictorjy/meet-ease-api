@@ -83,8 +83,6 @@ export class PrismaUserRepository implements UserRepository {
         foundUser.profile.updated_at,
       );
 
-      // const area: Area = {};
-
       let area: Area | undefined;
       if (foundUser.area) {
         area = new Area(
@@ -110,6 +108,7 @@ export class PrismaUserRepository implements UserRepository {
   async findAll(): Promise<UserModel[]> {
     try {
       const foundUsers = await this.prisma.user.findMany({
+        where: { deleted_at: null },
         include: {
           profile: true,
           area: true,
@@ -219,8 +218,11 @@ export class PrismaUserRepository implements UserRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await this.prisma.user.delete({
+      await this.prisma.user.update({
         where: { id },
+        data: {
+          deleted_at: new Date(),
+        },
       });
     } catch (error) {
       throw Exception.new({
