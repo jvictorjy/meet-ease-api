@@ -201,6 +201,11 @@ export class PrismaUserRepository implements UserRepository {
           name: user.name,
           email: user.email,
           phone: user.phone,
+          area: user.area_id
+            ? {
+                connect: { id: user.area_id },
+              }
+            : undefined,
           updated_at: new Date(),
         },
       });

@@ -22,6 +22,13 @@ export class UpdateUserRequestDto {
     example: faker.phone.number(),
   })
   phone?: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'Area ID of the user',
+    example: faker.string.uuid(),
+  })
+  area_id?: string;
 }
 
 export class UpdateUserResponseDto {

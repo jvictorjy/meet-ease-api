@@ -12,7 +12,8 @@ export class UpdateUserSchemaValidator implements CreateValidationSchema {
             required_error: 'Name is required',
           })
           .trim()
-          .min(1, { message: 'Name must be at least 1 character' }),
+          .min(1, { message: 'Name must be at least 1 character' })
+          .optional(),
         email: z
           .string({
             description: 'Email',
@@ -21,7 +22,8 @@ export class UpdateUserSchemaValidator implements CreateValidationSchema {
           })
           .email({ message: 'Invalid email address' })
           .trim()
-          .min(1, { message: 'Email must be at least 1 character' }),
+          .min(1, { message: 'Email must be at least 1 character' })
+          .optional(),
         phone: z
           .string({
             description: 'Phone',
@@ -29,7 +31,17 @@ export class UpdateUserSchemaValidator implements CreateValidationSchema {
             required_error: 'Phone is required',
           })
           .trim()
-          .min(1, { message: 'Phone must be at least 1 character' }),
+          .min(1, { message: 'Phone must be at least 1 character' })
+          .optional(),
+        area_id: z
+          .string({
+            description: 'Area',
+            invalid_type_error: 'Area must be a string',
+            required_error: 'Area is required',
+          })
+          .trim()
+          .min(1, { message: 'Area must be at least 1 character' })
+          .optional(),
       })
       .strict();
   }

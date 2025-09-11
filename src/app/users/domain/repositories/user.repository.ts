@@ -6,6 +6,7 @@ export interface UserUpdatePayload {
   name?: string;
   email?: string;
   phone?: string;
+  area_id?: string;
 }
 
 export interface UserRepository {
