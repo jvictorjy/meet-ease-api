@@ -2,15 +2,18 @@ import { User } from '@app/users/domain/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { UserModel } from '@app/users/domain/models/user.model';
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
+import { Area } from '@app/areas/domain/entities/area.entity';
 
 @Injectable()
 export class UserAggregateMapper {
   async mapToAggregate(
     userEntity: User,
     profileEntity: Profile,
+    areaEntity?: Area,
   ): Promise<UserModel> {
     const user = this.removeUnderscorePrefix(userEntity);
     const profile = this.removeUnderscorePrefix(profileEntity);
+    const area = this.removeUnderscorePrefix(areaEntity);
 
     return {
       id: user.id,
@@ -18,13 +21,16 @@ export class UserAggregateMapper {
       email: user.email,
       phone: user.phone,
       profile,
+      area,
       createdAt: user.created_at ?? new Date(),
       updatedAt: user.updated_at ?? new Date(),
     };
   }
 
   async mapCollection(users: any[]): Promise<any[]> {
-    return users.map((user) => this.mapToAggregate(user, user.profile));
+    return users.map((user) =>
+      this.mapToAggregate(user, user.profile, user.area),
+    );
   }
 
   private removeUnderscorePrefix(entity: any): Record<string, any> {
@@ -33,7 +39,6 @@ export class UserAggregateMapper {
     }
 
     return Object.entries(entity).reduce((cleaned, [key, value]) => {
-      // Remove underscore from the beginning of the key
       const cleanKey = key.startsWith('_') ? key.substring(1) : key;
       cleaned[cleanKey] = value;
       return cleaned;

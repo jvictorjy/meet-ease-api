@@ -7,6 +7,8 @@ import { UseCases } from '@app/users/application/use-cases';
 import { Controllers } from '@app/users/interfaces/http/controllers';
 import { ProfileAggregateMapper } from '@app/profiles/domain/mappers/profile-aggregate.mapper';
 import { UserAggregateMapper } from '@app/users/domain/mappers/user-aggregate.mapper';
+import { PrismaAreaRepository } from '@app/areas/infrastructure/persistence/prisma-area.repository';
+import { AreaAggregateMapper } from '@app/areas/domain/mappers/area-aggregate.mapper';
 
 @Module({
   imports: [CryptographyModule],
@@ -22,6 +24,10 @@ import { UserAggregateMapper } from '@app/users/domain/mappers/user-aggregate.ma
       useClass: PrismaProfileRepository,
     },
     {
+      provide: 'AreaRepository',
+      useClass: PrismaAreaRepository,
+    },
+    {
       provide: 'HashGenerator',
       useClass: BcryptHasher,
     },
@@ -32,6 +38,10 @@ import { UserAggregateMapper } from '@app/users/domain/mappers/user-aggregate.ma
     {
       provide: 'UserAggregateMapper',
       useClass: UserAggregateMapper,
+    },
+    {
+      provide: 'AreaAggregateMapper',
+      useClass: AreaAggregateMapper,
     },
   ],
   exports: [],

@@ -11,6 +11,7 @@ import { UserAggregateMapper } from '@app/users/domain/mappers/user-aggregate.ma
 import { UserModel } from '@app/users/domain/models/user.model';
 import { Profile } from '@app/profiles/domain/entities/profile.entity';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
+import { Area } from '@app/areas/domain/entities/area.entity';
 
 export class PrismaUserRepository implements UserRepository {
   private prisma = new PrismaClient();
@@ -34,6 +35,11 @@ export class PrismaUserRepository implements UserRepository {
           profile: {
             connect: { id: user.profile_id },
           },
+          area: user.area_id
+            ? {
+                connect: { id: user.area_id },
+              }
+            : undefined,
         },
       });
     } catch (error) {
@@ -50,6 +56,7 @@ export class PrismaUserRepository implements UserRepository {
         where: { id },
         include: {
           profile: true,
+          area: true,
         },
       });
 
@@ -62,6 +69,7 @@ export class PrismaUserRepository implements UserRepository {
         foundUser.phone,
         foundUser.password,
         foundUser.profile_id,
+        foundUser.area_id,
         foundUser.created_at,
         foundUser.updated_at,
       );
@@ -75,7 +83,22 @@ export class PrismaUserRepository implements UserRepository {
         foundUser.profile.updated_at,
       );
 
-      return this.mapper.mapToAggregate(user, profile);
+      // const area: Area = {};
+
+      let area: Area | undefined;
+      if (foundUser.area) {
+        area = new Area(
+          foundUser.area.id,
+          foundUser.area.name,
+          foundUser.area.description,
+          foundUser.area.parent_id,
+          foundUser.area.created_at,
+          foundUser.area.updated_at,
+          foundUser.area.deleted_at,
+        );
+      }
+
+      return this.mapper.mapToAggregate(user, profile, area);
     } catch (error) {
       throw Exception.new({
         code: Code.INTERNAL_SERVER_ERROR.code,
@@ -120,6 +143,7 @@ export class PrismaUserRepository implements UserRepository {
         foundUser.phone,
         foundUser.password,
         foundUser.profile_id,
+        foundUser.area_id,
         foundUser.created_at,
         foundUser.updated_at,
       );
@@ -157,6 +181,7 @@ export class PrismaUserRepository implements UserRepository {
         foundUser.phone,
         foundUser.password,
         foundUser.profile_id,
+        foundUser.area_id,
         foundUser.created_at,
         foundUser.updated_at,
       );

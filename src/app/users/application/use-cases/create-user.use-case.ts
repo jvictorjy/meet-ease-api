@@ -7,6 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { ProfileRepository } from '@app/profiles/domain/repositories/profile.repository';
+import { AreaRepository } from '@app/areas/domain/repositories/area.repository';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -17,13 +18,16 @@ export class CreateUserUseCase {
     @Inject('ProfileRepository')
     private readonly profileRepository: ProfileRepository,
 
+    @Inject('AreaRepository')
+    private readonly areaRepository: AreaRepository,
+
     @Inject('HashGenerator')
     private readonly hashProvider: HashGenerator,
   ) {}
 
   async execute(data: CreateUserRequestDto): Promise<void> {
     try {
-      const { name, email, phone, password, profile_id } = data;
+      const { name, email, phone, password, profile_id, area_id } = data;
 
       const profile = await this.profileRepository.findById(profile_id);
 
@@ -31,6 +35,15 @@ export class CreateUserUseCase {
         throw Exception.new({
           code: Code.NOT_FOUND.code,
           overrideMessage: `Profile not found`,
+        });
+      }
+
+      const area = await this.areaRepository.findById(area_id);
+
+      if (!area) {
+        throw Exception.new({
+          code: Code.NOT_FOUND.code,
+          overrideMessage: `Area not found`,
         });
       }
 
@@ -52,6 +65,7 @@ export class CreateUserUseCase {
         phone,
         hashedPassword,
         profile_id,
+        area_id,
         new Date(),
         new Date(),
       );

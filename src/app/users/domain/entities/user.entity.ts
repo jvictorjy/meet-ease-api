@@ -6,6 +6,7 @@ export class User {
     public readonly _phone: string,
     public readonly _password: string,
     public readonly _profile_id: string,
+    public readonly _area_id: string | null,
     public readonly _created_at: Date,
     public readonly _updated_at: Date,
   ) {
@@ -34,6 +35,10 @@ export class User {
 
   get profile_id(): string {
     return this._profile_id;
+  }
+
+  get area_id(): string | null {
+    return this._area_id;
   }
 
   get createdAt(): Date {

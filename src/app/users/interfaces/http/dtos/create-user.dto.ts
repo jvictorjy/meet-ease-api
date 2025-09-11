@@ -45,4 +45,11 @@ export class CreateUserRequestDto {
     example: faker.string.uuid(),
   })
   profile_id: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'Area assigned to the user',
+    example: faker.string.uuid(),
+  })
+  area_id: string;
 }
