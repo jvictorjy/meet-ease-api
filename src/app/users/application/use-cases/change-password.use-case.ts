@@ -39,8 +39,9 @@ export class ChangePasswordUseCase {
 
       if (!isValid) {
         throw Exception.new({
-          code: Code.UNAUTHORIZED.code,
-          overrideMessage: 'Current password is incorrect',
+          code: Code.BAD_REQUEST.code,
+          overrideMessage:
+            'An error occurred while trying to change the password.',
         });
       }
 

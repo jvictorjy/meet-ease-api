@@ -48,7 +48,6 @@ export class ChangePasswordController {
     @Body(new ZodValidationPipe(new ChangePasswordSchemaValidator()))
     body: ChangePasswordRequestDto,
   ) {
-    await this.useCase.execute(id, body);
-    return { message: 'Password changed' };
+    return this.useCase.execute(id, body);
   }
 }
