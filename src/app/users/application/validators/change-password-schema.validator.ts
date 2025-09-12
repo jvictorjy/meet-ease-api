@@ -5,6 +5,14 @@ export class ChangePasswordSchemaValidator implements CreateValidationSchema {
   createSchema(): z.ZodSchema {
     return z
       .object({
+        current_password: z
+          .string({
+            description: 'Current Password',
+            invalid_type_error: 'Current Password must be a string',
+            required_error: 'Current Password is required',
+          })
+          .trim()
+          .min(8, { message: 'Current Password must be at least 8 character' }),
         password: z
           .string({
             description: 'Password',
@@ -12,7 +20,7 @@ export class ChangePasswordSchemaValidator implements CreateValidationSchema {
             required_error: 'Password is required',
           })
           .trim()
-          .min(6, { message: 'Password must be at least 6 character' }),
+          .min(8, { message: 'Password must be at least 8 character' }),
         confirm_password: z
           .string({
             description: 'Confirm Password',
@@ -20,7 +28,7 @@ export class ChangePasswordSchemaValidator implements CreateValidationSchema {
             required_error: 'Confirm Password is required',
           })
           .trim()
-          .min(6, { message: 'Confirm Password must be at least 6 character' }),
+          .min(8, { message: 'Confirm Password must be at least 8 character' }),
       })
       .superRefine((data, ctx) => {
         if (data.confirm_password !== data.password) {

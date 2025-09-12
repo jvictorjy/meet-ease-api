@@ -232,4 +232,18 @@ export class PrismaUserRepository implements UserRepository {
       });
     }
   }
+
+  async updatePassword(userId: string, hashedPassword: string): Promise<void> {
+    try {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { password: hashedPassword, updated_at: new Date() },
+      });
+    } catch (error) {
+      throw Exception.new({
+        code: Code.INTERNAL_SERVER_ERROR.code,
+        overrideMessage: error.message,
+      });
+    }
+  }
 }

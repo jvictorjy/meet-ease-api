@@ -3,7 +3,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
 import { GetUserResponseDto } from '@app/users/interfaces/http/dtos/get-user.dto';
-import { UserModel } from '@app/users/domain/models/user.model';
+import { GetAreaDto } from '@app/areas/interfaces/http/dtos/get-area.dto';
+import { GetProfileUseCaseResponseDto } from '@app/profiles/interfaces/http/dtos/get-profile.dto';
 
 @Injectable()
 export class GetUserByIdUseCase {
@@ -12,7 +13,7 @@ export class GetUserByIdUseCase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(userId: string): Promise<UserModel> {
+  async execute(userId: string): Promise<GetUserResponseDto> {
     try {
       const user = await this.userRepository.findById(userId);
 
@@ -28,9 +29,10 @@ export class GetUserByIdUseCase {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        profile: user.profile,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        profile: user.profile as GetProfileUseCaseResponseDto,
+        area: user.area as GetAreaDto,
+        created_at: user.createdAt,
+        updated_at: user.updatedAt,
       };
     } catch (error) {
       if (error instanceof Exception) {

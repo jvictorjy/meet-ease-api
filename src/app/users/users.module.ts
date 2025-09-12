@@ -32,6 +32,10 @@ import { AreaAggregateMapper } from '@app/areas/domain/mappers/area-aggregate.ma
       useClass: BcryptHasher,
     },
     {
+      provide: 'HashComparer',
+      useClass: BcryptHasher,
+    },
+    {
       provide: 'ProfileAggregateMapper',
       useClass: ProfileAggregateMapper,
     },

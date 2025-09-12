@@ -1,8 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '@app/users/domain/repositories/user.repository';
-import { HashGenerator } from '@app/@common/application/cryptography';
+import {
+  HashComparer,
+  HashGenerator,
+} from '@app/@common/application/cryptography';
 import { Exception } from '@core/@shared/domain/exception/Exception';
 import { Code } from '@core/@shared/domain/error/Code';
+import { ChangePasswordRequestDto } from '@app/users/interfaces/http/dtos/change-password.dto';
 
 @Injectable()
 export class ChangePasswordUseCase {
@@ -12,9 +16,12 @@ export class ChangePasswordUseCase {
 
     @Inject('HashGenerator')
     private readonly hashProvider: HashGenerator,
+
+    @Inject('HashComparer')
+    private readonly hashComparer: HashComparer,
   ) {}
 
-  async execute(userId: string, password: string): Promise<void> {
+  async execute(userId: string, dto: ChangePasswordRequestDto): Promise<void> {
     try {
       const user = await this.userRepository.findById(userId);
 
@@ -25,9 +32,21 @@ export class ChangePasswordUseCase {
         });
       }
 
-      const hashed = await this.hashProvider.hash(password);
+      const isValid = await this.hashComparer.compare(
+        dto.current_password,
+        user.password,
+      );
 
-      await this.userRepository.update({ id: user.id, password: hashed });
+      if (!isValid) {
+        throw Exception.new({
+          code: Code.UNAUTHORIZED.code,
+          overrideMessage: 'Current password is incorrect',
+        });
+      }
+
+      const hashed = await this.hashProvider.hash(dto.password);
+
+      await this.userRepository.updatePassword(user.id, hashed);
     } catch (error) {
       if (error instanceof Exception) {
         throw error;

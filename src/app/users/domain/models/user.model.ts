@@ -3,6 +3,7 @@ export class UserModel {
   name: string;
   email: string;
   phone: string;
+  password: string;
   profile: Record<string, any>;
   area?: Record<string, any>;
   createdAt: Date;

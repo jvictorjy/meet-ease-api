@@ -13,7 +13,6 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { UserModel } from '@app/users/domain/models/user.model';
 
 @Controller('users')
 @ApiTags('Users') // Swagger tag for grouping endpoints under "Profiles"
@@ -40,7 +39,7 @@ export class GetUserByIdController {
   })
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
-  ): Promise<UserModel> {
+  ): Promise<GetUserResponseDto> {
     return this.getUserByIdUseCase.execute(id);
   }
 }
