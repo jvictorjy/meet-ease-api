@@ -3,6 +3,7 @@ import { UpdateUserUseCase } from '@app/users/application/use-cases/update-user.
 import { GetUserByIdUseCase } from '@app/users/application/use-cases/get-user-by-id.use-case';
 import { GetAllUsersUseCase } from '@app/users/application/use-cases/get-all-users.use-case';
 import { DeleteUserUseCase } from '@app/users/application/use-cases/delete-user.use-case';
+import { ChangePasswordUseCase } from '@app/users/application/use-cases/change-password.use-case';
 
 export const UseCases = [
   CreateUserUseCase,
@@ -10,4 +11,5 @@ export const UseCases = [
   GetUserByIdUseCase,
   GetAllUsersUseCase,
   DeleteUserUseCase,
+  ChangePasswordUseCase,
 ];

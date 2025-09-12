@@ -200,6 +200,7 @@ export class PrismaUserRepository implements UserRepository {
           name: user.name,
           email: user.email,
           phone: user.phone,
+          password: user.password,
           area: user.area_id
             ? {
                 connect: { id: user.area_id },
