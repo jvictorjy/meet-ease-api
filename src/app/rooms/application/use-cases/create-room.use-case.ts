@@ -15,6 +15,9 @@ export interface CreateRoomLayoutDto {
 export interface CreateRoomDto {
   name: string;
   description?: string;
+  max_capacity: number;
+  opening_time: string;
+  closing_time: string;
   layouts?: CreateRoomLayoutDto[];
 }
 
@@ -31,7 +34,7 @@ export class CreateRoomUseCase {
   async execute(
     payload: CreateRoomDto,
     files?: Express.Multer.File[],
-  ): Promise<void> {
+  ): Promise<import('@app/rooms/domain/models/room.model').RoomModel> {
     try {
       const roomId = uuid();
       const now = new Date();
@@ -40,6 +43,9 @@ export class CreateRoomUseCase {
         roomId,
         payload.name,
         payload.description ?? '',
+        payload.max_capacity,
+        payload.opening_time,
+        payload.closing_time,
         now,
         now,
         null,
@@ -81,6 +87,9 @@ export class CreateRoomUseCase {
       } else {
         await this.roomRepository.create(room);
       }
+
+      const created = await this.roomRepository.findById(roomId);
+      return created!;
     } catch (error) {
       if (error instanceof Exception) {
         throw error;

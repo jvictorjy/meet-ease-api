@@ -62,14 +62,17 @@ model Area {
 }
 
 model Room {
-  id          String       @id @default(uuid())
-  name        String       @db.VarChar(255)
-  description String?      @db.Text
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
-  deleted_at  DateTime?
+  id            String       @id @default(uuid())
+  name          String       @db.VarChar(255)
+  description   String?      @db.Text
+  max_capacity  Int          @default(1)
+  opening_time  String       @db.VarChar(5) @default("06:00")
+  closing_time  String       @db.VarChar(5) @default("23:00")
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  deleted_at    DateTime?
 
-  layouts     RoomLayout[]
+  layouts       RoomLayout[]
 
   @@map("rooms")
 }

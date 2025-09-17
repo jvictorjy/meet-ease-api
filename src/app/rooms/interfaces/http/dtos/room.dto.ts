@@ -79,9 +79,30 @@ export class CreateRoomDto {
   })
   description?: string;
 
+  @ApiProperty({
+    description: 'The maximum capacity of the room',
+    example: 20,
+    type: Number,
+  })
+  max_capacity: number;
+
+  @ApiProperty({
+    description: 'Opening time in HH:mm format',
+    example: '08:00',
+    type: String,
+  })
+  opening_time: string;
+
+  @ApiProperty({
+    description: 'Closing time in HH:mm format',
+    example: '18:00',
+    type: String,
+  })
+  closing_time: string;
+
   @ApiPropertyOptional({
     description: 'The layout of the room',
-    type: CreateRoomLayoutDto,
+    type: [CreateRoomLayoutDto],
     nullable: true,
   })
   layouts?: CreateRoomLayoutDto[];
@@ -122,6 +143,24 @@ export class RoomResponseDto {
     nullable: true,
   })
   description: string;
+
+  @ApiProperty({
+    description: 'The maximum capacity of the room',
+    example: 20,
+  })
+  max_capacity: number;
+
+  @ApiProperty({
+    description: 'Opening time in HH:mm format',
+    example: '08:00',
+  })
+  opening_time: string;
+
+  @ApiProperty({
+    description: 'Closing time in HH:mm format',
+    example: '18:00',
+  })
+  closing_time: string;
 
   @ApiProperty({
     description: 'The date when the room was created',

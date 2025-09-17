@@ -23,7 +23,10 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { CreateRoomDto } from '@app/rooms/interfaces/http/dtos/room.dto';
+import {
+  CreateRoomDto,
+  RoomResponseDto,
+} from '@app/rooms/interfaces/http/dtos/room.dto';
 import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -52,6 +55,7 @@ export class CreateRoomController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Room created',
+    type: RoomResponseDto,
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
