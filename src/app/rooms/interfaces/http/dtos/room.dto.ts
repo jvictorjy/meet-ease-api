@@ -122,6 +122,27 @@ export class UpdateRoomDto {
     nullable: true,
   })
   description?: string;
+
+  @ApiProperty({
+    description: 'The maximum capacity of the room',
+    example: 20,
+    type: Number,
+  })
+  max_capacity: number;
+
+  @ApiProperty({
+    description: 'Opening time in HH:mm format',
+    example: '08:00',
+    type: String,
+  })
+  opening_time: string;
+
+  @ApiProperty({
+    description: 'Closing time in HH:mm format',
+    example: '18:00',
+    type: String,
+  })
+  closing_time: string;
 }
 
 export class RoomResponseDto {

@@ -8,6 +8,9 @@ export interface UpdateRoomDto {
   id: string;
   name?: string;
   description?: string;
+  max_capacity: number;
+  opening_time: string;
+  closing_time: string;
 }
 
 @Injectable()
@@ -32,9 +35,9 @@ export class UpdateRoomUseCase {
         existingRoom.id,
         payload.name ?? existingRoom.name,
         payload.description ?? existingRoom.description,
-        existingRoom.max_capacity,
-        existingRoom.opening_time,
-        existingRoom.closing_time,
+        payload.max_capacity ?? existingRoom.max_capacity,
+        payload.opening_time ?? existingRoom.opening_time,
+        payload.closing_time ?? existingRoom.closing_time,
         existingRoom.createdAt,
         new Date(),
         existingRoom.deletedAt,

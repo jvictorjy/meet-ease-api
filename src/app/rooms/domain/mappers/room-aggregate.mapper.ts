@@ -19,12 +19,12 @@ export class RoomAggregateMapper {
       id: room.id,
       name: room.name,
       description: room.description,
-      max_capacity: room.maxCapacity,
-      opening_time: room.openingTime,
-      closing_time: room.closingTime,
-      createdAt: room.createdAt || new Date(),
-      updatedAt: room.updatedAt || new Date(),
-      deletedAt: room.deletedAt,
+      max_capacity: room.max_capacity,
+      opening_time: room.opening_time,
+      closing_time: room.closing_time,
+      createdAt: room.created_at || new Date(),
+      updatedAt: room.updated_at || new Date(),
+      deletedAt: room.deleted_at,
       layouts: mappedLayouts,
     };
   }
@@ -68,7 +68,6 @@ export class RoomAggregateMapper {
     }
 
     return Object.entries(entity).reduce((cleaned, [key, value]) => {
-      // Remove underscore from the beginning of the key
       const cleanKey = key.startsWith('_') ? key.substring(1) : key;
       cleaned[cleanKey] = value;
       return cleaned;

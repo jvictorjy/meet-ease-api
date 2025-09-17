@@ -1,10 +1,10 @@
 import {
   Controller,
-  Put,
   Body,
   Param,
   HttpCode,
   HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { UpdateRoomUseCase } from '@app/rooms/application/use-cases/update-room.use-case';
 import {
@@ -23,6 +23,7 @@ import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { ZodValidationPipe } from '@app/@common/application/pipes/zod-validation.pipe';
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
+import { UpdateRoomSchemaValidator } from '@app/rooms/application/validators/update-room-schema.validator';
 
 @Controller('rooms')
 @ApiTags('Rooms')
@@ -35,7 +36,7 @@ import { UUIDSchemaValidation } from '@app/@common/application/validations';
 export class UpdateRoomController {
   constructor(private readonly updateRoomUseCase: UpdateRoomUseCase) {}
 
-  @Put(':id')
+  @Patch(':id')
   @Roles(RoleName.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
@@ -54,7 +55,8 @@ export class UpdateRoomController {
   @ApiBody({ type: UpdateRoomDto })
   async handle(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
-    @Body() body: UpdateRoomDto,
+    @Body(new ZodValidationPipe(new UpdateRoomSchemaValidator()))
+    body: UpdateRoomDto,
   ) {
     return this.updateRoomUseCase.execute({ id, ...body });
   }
