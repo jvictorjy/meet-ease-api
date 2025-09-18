@@ -1,0 +1,230 @@
+# This workflow will build and push a new container image to Amazon ECR,
+# and then will deploy a new task definition to Amazon ECS, when there is a push to the "main" branch.
+#
+# To use this workflow, you will need to complete the following set-up steps:
+#
+# 1. Create an ECR repository to store your images.
+#    For example: `aws ecr create-repository --repository-name my-ecr-repo --region us-east-2`.
+#    Replace the value of the `ECR_REPOSITORY` environment variable in the workflow below with your repository's name.
+#    Replace the value of the `AWS_REGION` environment variable in the workflow below with your repository's region.
+#
+# 2. Create an ECS task definition, an ECS cluster, and an ECS service.
+#    For example, follow the Getting Started guide on the ECS console:
+#      https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/firstRun
+#    Replace the value of the `ECS_SERVICE` environment variable in the workflow below with the name you set for the Amazon ECS service.
+#    Replace the value of the `ECS_CLUSTER` environment variable in the workflow below with the name you set for the cluster.
+#
+# 3. Store your ECS task definition as a JSON file in your repository.
+#    The format should follow the output of `aws ecs register-task-definition --generate-cli-skeleton`.
+#    Replace the value of the `ECS_TASK_DEFINITION` environment variable in the workflow below with the path to the JSON file.
+#    Replace the value of the `CONTAINER_NAME` environment variable in the workflow below with the name of the container
+#    in the `containerDefinitions` section of the task definition.
+#
+# 4. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+#    See the documentation for each action used below for the recommended IAM policies for this IAM user,
+#    and best practices on handling the access key credentials.
+
+name: Deploy to EC2 Amazon Linux with Docker
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  APP_NAME: meet-ease-api
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/meet-ease-api
+  CONTAINER_NAME: meet-ease-api
+  PORT: 3000
+  NODE_VERSION: '22'
+
+jobs:
+  # Job 1: Testes e Linting
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+
+  # Job 2: Build e Push da Imagem Docker
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Job 3: Deploy para EC2 Amazon Linux
+  deploy-ec2:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    
+    steps:
+      - name: Deploy to Amazon Linux EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user  # Amazon Linux usa ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT || 22 }}
+          timeout: 300s
+          command_timeout: 300s
+          script: |
+            set -e
+            
+            echo "🚀 Starting deployment on Amazon Linux EC2..."
+            
+            # Verificar se Docker está rodando
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            
+            # Login no Docker Hub
+            echo "🔐 Logging into Docker Hub..."
+            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+            
+            # Executar script de deploy
+            echo "📦 Running deployment script..."
+            if [ -f /opt/${{ env.APP_NAME }}/scripts/deploy.sh ]; then
+              chmod +x /opt/${{ env.APP_NAME }}/scripts/deploy.sh
+              /opt/${{ env.APP_NAME }}/scripts/deploy.sh ${{ secrets.DOCKERHUB_USERNAME }}
+            else
+              echo "⚠️  Deploy script not found, running fallback deployment..."
+              
+              # Fallback deployment
+              IMAGE="${{ env.IMAGE_NAME }}:latest"
+              echo "📥 Pulling image $IMAGE"
+              docker pull "$IMAGE"
+
+              # Create network if not exists
+              docker network create app-net || true
+
+              # Ensure application directory exists
+              sudo mkdir -p /opt/${{ env.APP_NAME }}
+              
+              # Stop and remove existing container
+              echo "⏹️  Stopping existing container..."
+              docker stop ${{ env.CONTAINER_NAME }} || true
+              docker rm ${{ env.CONTAINER_NAME }} || true
+
+              # Start new container
+              echo "🆕 Starting new container..."
+              docker run -d \
+                --name ${{ env.CONTAINER_NAME }} \
+                --restart unless-stopped \
+                --network app-net \
+                -p ${{ env.PORT }}:${{ env.PORT }} \
+                --env-file /opt/${{ env.APP_NAME }}/.env \
+                --log-driver json-file \
+                --log-opt max-size=10m \
+                --log-opt max-file=3 \
+                "$IMAGE"
+
+              # Wait for container to start
+              echo "⏳ Waiting for container to start..."
+              sleep 15
+
+              # Health check
+              echo "🔍 Running health check..."
+              if docker ps | grep -q ${{ env.CONTAINER_NAME }}; then
+                echo "✅ Container is running!"
+                if curl -f http://localhost:${{ env.PORT }}/health > /dev/null 2>&1; then
+                  echo "✅ Health check passed!"
+                else
+                  echo "⚠️  Health check failed, but container is running"
+                fi
+              else
+                echo "❌ Container failed to start!"
+                docker logs ${{ env.CONTAINER_NAME }}
+                exit 1
+              fi
+
+              # Cleanup old images
+              echo "🧹 Cleaning up old images..."
+              docker image prune -f
+            fi
+            
+            echo "🎉 Deployment completed successfully!"
+            
+            # Show final status
+            echo "📊 Final status:"
+            docker ps --filter name=${{ env.CONTAINER_NAME }}
+            echo "💾 System resources:"
+            df -h /
+            free -h
+
+  # Job 4: Notificação (opcional)
+  notify:
+    needs: [deploy-ec2]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify deployment result
+        run: |
+          if [ "${{ needs.deploy-ec2.result }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+            exit 1
+          fi
