@@ -60,14 +60,15 @@ export class CreateRoomUseCase {
         const layouts = payload.layouts;
         const dataLayouts: RoomLayout[] = [];
 
-        // Process each layout with its corresponding file
         for (let i = 0; i < layouts.length; i++) {
           const layout = layouts[i];
           let imageUrl = '';
 
-          // Upload the file if it exists for this layout
           if (i < files.length) {
-            imageUrl = await this.fileUploadService.uploadFile(files[i]);
+            imageUrl = await this.fileUploadService.uploadFile(
+              files[i],
+              roomId,
+            );
           }
 
           const newLayout = new RoomLayout(

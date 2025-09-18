@@ -283,6 +283,7 @@ export class PrismaRoomRepository implements RoomRepository {
     try {
       const layoutsData = await this.prisma.roomLayout.findMany({
         where: { room_id: roomId, deleted_at: null },
+        orderBy: { created_at: 'asc' },
       });
 
       const layoutEntities = layoutsData.map(

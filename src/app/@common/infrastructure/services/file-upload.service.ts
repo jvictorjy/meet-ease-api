@@ -17,7 +17,7 @@ export class FileUploadService {
    */
   async uploadFile(
     file: Express.Multer.File,
-    directory: string = '',
+    directory?: string,
   ): Promise<string> {
     const fileExtension = file.originalname.split('.').pop();
     const fileName = `${directory ? `${directory}/` : ''}${uuid()}.${fileExtension}`;

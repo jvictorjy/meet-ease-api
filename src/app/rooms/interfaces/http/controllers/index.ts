@@ -6,6 +6,7 @@ import { DeleteRoomController } from '@app/rooms/interfaces/http/controllers/del
 import { AddRoomLayoutController } from '@app/rooms/interfaces/http/controllers/add-room-layout.controller';
 import { UpdateRoomLayoutController } from '@app/rooms/interfaces/http/controllers/update-room-layout.controller';
 import { DeleteRoomLayoutController } from '@app/rooms/interfaces/http/controllers/delete-room-layout.controller';
+import { GetRoomLayoutsController } from '@app/rooms/interfaces/http/controllers/get-room-layouts.controller';
 
 export const Controllers = [
   CreateRoomController,
@@ -16,4 +17,5 @@ export const Controllers = [
   AddRoomLayoutController,
   UpdateRoomLayoutController,
   DeleteRoomLayoutController,
+  GetRoomLayoutsController,
 ];

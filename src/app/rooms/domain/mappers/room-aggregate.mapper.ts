@@ -46,11 +46,11 @@ export class RoomAggregateMapper {
     return {
       id: layout.id,
       description: layout.description,
-      imageUrl: layout.imageUrl,
+      imageUrl: `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${layout.image_url}`,
       roomId: layout.roomId,
-      createdAt: layout.createdAt || new Date(),
-      updatedAt: layout.updatedAt || new Date(),
-      deletedAt: layout.deletedAt,
+      createdAt: layout.created_at || new Date(),
+      updatedAt: layout.updated_at || new Date(),
+      deletedAt: layout.deleted_at,
     };
   }
 

@@ -11,7 +11,10 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
 } from '@nestjs/common';
-import { AddRoomLayoutUseCase } from '@app/rooms/application/use-cases/add-room-layout.use-case';
+import {
+  AddRoomLayoutUseCase,
+  IAddRoomLayoutDto,
+} from '@app/rooms/application/use-cases/add-room-layout.use-case';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -24,7 +27,6 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { AddRoomLayoutDto } from '@app/rooms/interfaces/http/dtos/room.dto';
 import { Roles } from '@app/auth/application/docorators/roles.decorator';
 import { RoleName } from '@app/auth/infrastructure/roles/roles.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -90,14 +92,11 @@ export class AddRoomLayoutController {
     )
     file: Express.Multer.File,
   ) {
-    const imageUrl = await this.fileUploadService.uploadFile(file);
-
-    const dto: AddRoomLayoutDto = {
+    const dto: IAddRoomLayoutDto = {
       roomId,
       description: body.description,
-      imageUrl,
     };
 
-    return this.addRoomLayoutUseCase.execute(dto);
+    return this.addRoomLayoutUseCase.execute(dto, file);
   }
 }

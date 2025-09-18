@@ -6,6 +6,7 @@ import { DeleteRoomUseCase } from './delete-room.use-case';
 import { AddRoomLayoutUseCase } from './add-room-layout.use-case';
 import { UpdateRoomLayoutUseCase } from './update-room-layout.use-case';
 import { DeleteRoomLayoutUseCase } from './delete-room-layout.use-case';
+import { ListRoomLayoutsUseCase } from './list-room-layouts.use-case';
 
 export const UseCases = [
   CreateRoomUseCase,
@@ -16,4 +17,5 @@ export const UseCases = [
   AddRoomLayoutUseCase,
   UpdateRoomLayoutUseCase,
   DeleteRoomLayoutUseCase,
+  ListRoomLayoutsUseCase,
 ];

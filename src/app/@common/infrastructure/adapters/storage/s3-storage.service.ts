@@ -40,6 +40,7 @@ export class S3StorageService implements StorageService {
     mimeType: string,
   ): Promise<string> {
     try {
+      console.log(file);
       const key = `room-layouts/${fileName}`;
 
       await this.s3Client.send(
@@ -62,7 +63,6 @@ export class S3StorageService implements StorageService {
 
   async deleteFile(fileUrl: string): Promise<void> {
     try {
-      // Extract the key from the URL
       const key = this.getKeyFromUrl(fileUrl);
 
       if (!key) {
@@ -84,7 +84,7 @@ export class S3StorageService implements StorageService {
   }
 
   getFileUrl(fileName: string): string {
-    return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${fileName}`;
+    return fileName;
   }
 
   private getKeyFromUrl(url: string): string | null {
