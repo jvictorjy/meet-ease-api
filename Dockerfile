@@ -31,4 +31,4 @@ RUN npm prune --production
 EXPOSE 3000
 
 # Comando de inicialização
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
+CMD ["sh", "-c", "echo 'DATABASE_URL check:' $DATABASE_URL && if [ -z \"$DATABASE_URL\" ]; then echo 'ERROR: DATABASE_URL is not set!'; exit 1; fi && npx prisma migrate deploy && npm run start:prod"]

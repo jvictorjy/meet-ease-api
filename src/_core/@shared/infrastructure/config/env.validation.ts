@@ -95,6 +95,10 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   @IsString()
   DB_LOGGING: string;
+
+  @IsNotEmpty()
+  @IsString()
+  DATABASE_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {
