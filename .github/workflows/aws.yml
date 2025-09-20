@@ -43,7 +43,9 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy-ec2:
