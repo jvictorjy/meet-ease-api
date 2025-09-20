@@ -2,29 +2,6 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: meet-ease-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: meet-ease-dev
-      POSTGRES_USER: meeteaseuser
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=en_US.UTF-8 --lc-ctype=en_US.UTF-8"
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backups:/backups
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app-net
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   nginx:
     image: nginx:alpine
     container_name: meet-ease-nginx
@@ -40,10 +17,6 @@ services:
       - postgres
     networks:
       - app-net
-
-volumes:
-  postgres_data:
-  redis_data:
 
 networks:
   app-net:
