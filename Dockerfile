@@ -23,8 +23,11 @@ RUN npm run build
 # Remover devDependencies após build
 RUN npm prune --production
 
+# Gerar Prisma Client
+RUN npx prisma generate
+
 # Expor porta
 EXPOSE 3000
 
 # Comando de inicialização
-CMD ["sh", "-c", "echo 'DATABASE_URL:' $DATABASE_URL && npx prisma generate && npx prisma migrate deploy && npm run start:prod"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
