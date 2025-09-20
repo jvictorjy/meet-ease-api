@@ -17,14 +17,15 @@ COPY . .
 # Reinstalar para pegar devDependencies necessárias para build
 RUN npm install
 
+# Gerar Prisma Client
+RUN npx prisma generate
+
 # Build da aplicação
 RUN npm run build
 
 # Remover devDependencies após build
 RUN npm prune --production
 
-# Gerar Prisma Client
-RUN npx prisma generate
 
 # Expor porta
 EXPOSE 3000
