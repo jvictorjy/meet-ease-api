@@ -78,17 +78,18 @@ jobs:
               ENV_FILE=""
             fi
 
-            # Stop and remove existing container (MELHORADO)
-            echo "🛑 Stopping existing containers..."
+            # CORREÇÃO: Stop and remove existing container FORÇADAMENTE
+            echo "🛑 Cleaning up existing containers..."
 
-            # Para containers em execução com esse nome
-            sudo docker stop ${{ env.CONTAINER_NAME }} 2>/dev/null || echo "No running container to stop"
+            # Remove container pelo nome (força parada se necessário)
+            sudo docker rm -f ${{ env.CONTAINER_NAME }} 2>/dev/null || echo "No container named ${{ env.CONTAINER_NAME }} to remove"
 
-            # Remove containers com esse nome (rodando ou parados)
-            sudo docker rm ${{ env.CONTAINER_NAME }} 2>/dev/null || echo "No container to remove"
-
-            # Remove containers órfãos que possam estar usando a porta 3000
-            sudo docker ps --filter "publish=3000" --format "{{.Names}}" | xargs -r sudo docker rm -f || true
+            # Remove qualquer container usando a porta 3000
+            CONTAINERS_ON_PORT=$(sudo docker ps --filter "publish=3000" --format "{{.ID}}" 2>/dev/null || true)
+            if [ ! -z "$CONTAINERS_ON_PORT" ]; then
+              echo "Found containers using port 3000, removing them..."
+              echo "$CONTAINERS_ON_PORT" | xargs -r sudo docker rm -f
+            fi
 
             # Start new container
             echo "🚀 Starting new container..."
@@ -100,4 +101,10 @@ jobs:
               $ENV_FILE \
               "$IMAGE"
 
-            #
+            # Verificar se subiu corretamente
+            sleep 5
+            if sudo docker ps | grep -q ${{ env.CONTAINER_NAME }}; then
+              echo "✅ Container ${{ env.CONTAINER_NAME }} started successfully!"
+            else
+              echo "❌ Failed to start container!"
+              sudo docker logs ${{ env
