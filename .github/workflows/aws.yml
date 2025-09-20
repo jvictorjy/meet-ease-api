@@ -78,12 +78,20 @@ jobs:
               ENV_FILE=""
             fi
 
-            # Stop and remove existing container
-            if [ "$(sudo docker ps -aq -f name=${{ env.CONTAINER_NAME }})" ]; then
-              sudo docker rm -f ${{ env.CONTAINER_NAME }} || true
-            fi
+            # Stop and remove existing container (MELHORADO)
+            echo "🛑 Stopping existing containers..."
+
+            # Para containers em execução com esse nome
+            sudo docker stop ${{ env.CONTAINER_NAME }} 2>/dev/null || echo "No running container to stop"
+
+            # Remove containers com esse nome (rodando ou parados)
+            sudo docker rm ${{ env.CONTAINER_NAME }} 2>/dev/null || echo "No container to remove"
+
+            # Remove containers órfãos que possam estar usando a porta 3000
+            sudo docker ps --filter "publish=3000" --format "{{.Names}}" | xargs -r sudo docker rm -f || true
 
             # Start new container
+            echo "🚀 Starting new container..."
             sudo docker run -d \
               --name ${{ env.CONTAINER_NAME }} \
               --restart unless-stopped \
@@ -92,4 +100,4 @@ jobs:
               $ENV_FILE \
               "$IMAGE"
 
-            sudo docker image prune -f
+            #

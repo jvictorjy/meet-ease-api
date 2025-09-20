@@ -4,6 +4,7 @@ set -e
 
 APP_DIR="/opt/meet-ease-api"
 DOCKER_IMAGE="$1/meet-ease-api:latest"
+CONTAINER_NAME="meet-ease-api"
 
 cd $APP_DIR
 
@@ -13,15 +14,25 @@ echo "🚀 Starting deployment..."
 echo "📦 Pulling latest image..."
 docker pull $DOCKER_IMAGE
 
-# Parar container existente
-echo "⏹️  Stopping existing container..."
-docker stop meet-ease-api || true
-docker rm meet-ease-api || true
+# Parar e remover container existente (MELHORADO)
+echo "⏹️  Stopping and removing existing containers..."
+
+# Para containers em execução
+docker stop $CONTAINER_NAME 2>/dev/null || echo "No running container to stop"
+
+# Remove containers
+docker rm $CONTAINER_NAME 2>/dev/null || echo "No container to remove"
+
+# Mata processos na porta 3000 se houver
+sudo fuser -k 3000/tcp 2>/dev/null || echo "Port 3000 is free"
+
+# Criar rede se não existir
+docker network create app-net 2>/dev/null || echo "Network app-net already exists"
 
 # Iniciar novo container
 echo "🆕 Starting new container..."
 docker run -d \
-  --name meet-ease-api \
+  --name $CONTAINER_NAME \
   --restart unless-stopped \
   --network app-net \
   -p 3000:3000 \
@@ -36,19 +47,25 @@ echo "⏳ Waiting for container to start..."
 sleep 10
 
 # Verificar saúde do container
-if docker ps | grep -q meet-ease-api; then
+if docker ps | grep -q $CONTAINER_NAME; then
     echo "✅ Container started successfully!"
-    
+
     # Testar endpoint de health
     echo "🔍 Testing health endpoint..."
-    if curl -f http://localhost:3000/health > /dev/null 2>&1; then
-        echo "✅ Health check passed!"
-    else
-        echo "⚠️  Health check failed, but container is running"
-    fi
+    for i in {1..30}; do
+        if curl -f http://localhost:3000/health > /dev/null 2>&1; then
+            echo "✅ Health check passed!"
+            break
+        elif [ $i -eq 30 ]; then
+            echo "⚠️  Health check timeout, but container is running"
+        else
+            echo "Waiting for app to be ready... ($i/30)"
+            sleep 2
+        fi
+    done
 else
     echo "❌ Container failed to start!"
-    docker logs meet-ease-api
+    docker logs $CONTAINER_NAME
     exit 1
 fi
 
