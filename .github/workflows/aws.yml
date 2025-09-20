@@ -59,6 +59,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_PORT || 22 }}
+
           script: |
             set -e
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
@@ -107,4 +108,8 @@ jobs:
               echo "✅ Container ${{ env.CONTAINER_NAME }} started successfully!"
             else
               echo "❌ Failed to start container!"
-              sudo docker logs ${{ env
+              sudo docker logs ${{ env.CONTAINER_NAME }} || true
+              exit 1
+            fi
+
+            sudo docker image prune -f
