@@ -26,14 +26,14 @@ echo "🗄️ DATABASE_URL configured"
 
 # Criar arquivo .env na raiz do projeto
 echo "Creating .env file for Prisma..."
-cat > /.env << EOF
+cat > /app/.env << EOF
 DATABASE_URL=$DATABASE_URL
 EOF
 
 # Criar arquivo .env na pasta do Prisma (local correto conforme package.json)
 echo "Creating .env file in Prisma directory..."
-mkdir -p /src/_core/@shared/infrastructure/adapters/database/prisma
-cat > /src/_core/@shared/infrastructure/adapters/database/prisma/.env << EOF
+mkdir -p /app/src/_core/@shared/infrastructure/adapters/database/prisma
+cat > /app/src/_core/@shared/infrastructure/adapters/database/prisma/.env << EOF
 DATABASE_URL=$DATABASE_URL
 EOF
 
