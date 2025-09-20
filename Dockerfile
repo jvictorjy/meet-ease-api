@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copiar arquivos de dependências
 COPY package*.json ./
-COPY prisma ./prisma/
+COPY /src/_core/@shared/infrastructure/adapters/database/prisma ./src/_core/@shared/infrastructure/adapters/database/prisma/
 
 # Instalar dependências
 RUN npm ci --only=production
